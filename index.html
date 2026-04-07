@@ -59,16 +59,12 @@ h2 em{font-style:normal;color:var(--accent);}
 @keyframes popin{0%{opacity:0;transform:scale(0);}60%{opacity:1;transform:scale(1.4);}100%{opacity:1;transform:scale(1);}}
 @keyframes fadeout-slow{from{opacity:1;}to{opacity:0.1;}}
 @keyframes pulse-ring{0%,100%{opacity:.9;}50%{opacity:.5;}}
-@keyframes zoom-fractal{from{transform:scale(0.15);opacity:0;}20%{opacity:0.8;}80%{opacity:0.6;}to{transform:scale(2.5);opacity:0;}}
 
 #logo-anim{
   width:100%;height:100%;
   pointer-events:none;
   animation:fadeout-slow 1.5s cubic-bezier(.4,0,.6,1) 6s forwards;
 }
-.fractal-layer{position:absolute;inset:0;width:100%;height:100%;animation:zoom-fractal 4s ease-in-out infinite;transform-origin:center center;pointer-events:none;}
-.fractal-layer:nth-child(2){animation-delay:-1.33s;}
-.fractal-layer:nth-child(3){animation-delay:-2.66s;}
 .logo-glow{
   position:absolute;inset:0;
   background:radial-gradient(circle at 50% 50%,rgba(200,240,96,.07) 0%,transparent 65%);
@@ -302,21 +298,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
       <!-- animated logo right — bigger, slower fade -->
       <div class="logo-stage">
         <div class="logo-glow"></div>
-<svg class="fractal-layer" viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg" opacity="0.3">
-  <circle cx="160" cy="138" r="40" fill="none" stroke="#c8f060" stroke-width="0.6"/>
-  <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.6"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.6"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.6"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.6"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.6"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.6"/>
-  <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
-</svg>
-<svg class="fractal-layer" viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg" opacity="0.3">
-  <circle cx="160" cy="138" r="40" fill="none" stroke="#c8f060" stroke-width="0.6"/>
-  <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.6"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.6"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.6"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.6"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.6"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.6"/>
-  <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
-</svg>
-<svg class="fractal-layer" viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg" opacity="0.3">
-  <circle cx="160" cy="138" r="40" fill="none" stroke="#c8f060" stroke-width="0.6"/>
-  <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.6"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.6"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.6"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.6"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.6"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.6"/>
-  <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
-</svg>
         <svg id="logo-anim" viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg">
 
           <circle class="c-center" cx="160" cy="138" r="4" fill="#fff" style="transform-origin:160px 138px;"/>
