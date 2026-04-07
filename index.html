@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="description" content="Agentes de IA para negocios en Santiago. Tu agente responde WhatsApp 24/7, agenda citas y califica leads. 2 semanas gratis.">
 <meta name="keywords" content="agente IA WhatsApp Santiago Chile, chatbot negocio, automatización WhatsApp">
@@ -23,6 +23,7 @@
 }
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+html{overflow-x:hidden;}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);}
@@ -56,6 +57,7 @@ h2 em{font-style:normal;color:var(--accent);}
   position:relative;
   margin:0 auto;
   pointer-events:none;
+  overflow:hidden;
 }
 
 /* THE BUILD ANIMATION */
