@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero IA — Agentes de IA para tu negocio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#161616;
+  --text:#f5f5f5;--muted:#666660;--muted2:#444440;
+  --accent:#c8f060;--accent2:#a8d040;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);}
+.logo-nav{display:flex;align-items:center;gap:.875rem;text-decoration:none;}
+.logo-nav svg{width:44px;height:44px;}
+.logo-wordmark{font-size:.7rem;font-weight:300;letter-spacing:.38em;color:var(--text);text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:2.5rem;}
+.nav-links a{font-size:.78rem;font-weight:300;letter-spacing:.04em;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+.btn-cta{display:inline-flex;align-items:center;gap:.4rem;background:var(--accent);color:#080808;font-size:.78rem;font-weight:500;padding:.5rem 1.1rem;border-radius:2px;text-decoration:none;transition:background .2s,transform .15s;}
+.btn-cta:hover{background:var(--accent2);transform:translateY(-1px);}
+
+/* SHARED */
+.container{max-width:1080px;margin:0 auto;padding:0 2rem;}
+.section-tag{font-size:.65rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;}
+.section-tag::before{content:'';display:inline-block;width:20px;height:1px;background:var(--muted2);}
+h2{font-size:clamp(1.9rem,3vw,2.8rem);font-weight:200;line-height:1.12;letter-spacing:-.02em;color:var(--text);}
+h2 em{font-style:normal;color:var(--accent);}
+
+/* GHOST LOGO utility — used throughout page */
+.gl{position:absolute;pointer-events:none;overflow:visible;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 80px;position:relative;overflow:clip;}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;position:relative;z-index:2;}
+
+/* animated logo stage — roughly half the viewport */
+.logo-stage{
+  width:min(52vw,580px);
+  height:min(52vw,580px);
+  position:relative;
+  margin:0 auto;
+  pointer-events:none;
+}
+
+/* THE BUILD ANIMATION */
+@keyframes fadein{to{opacity:1;}}
+@keyframes draw-ring{to{stroke-dashoffset:0;}}
+@keyframes popin{0%{opacity:0;transform:scale(0);}60%{opacity:1;transform:scale(1.4);}100%{opacity:1;transform:scale(1);}}
+@keyframes fadeout-slow{from{opacity:1;}to{opacity:0.1;}}
+@keyframes pulse-ring{0%,100%{opacity:.9;}50%{opacity:.5;}}
+
+#logo-anim{
+  width:100%;height:100%;
+  pointer-events:none;
+  animation:fadeout-slow 1.5s cubic-bezier(.4,0,.6,1) 6s forwards;
+}
+.logo-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(200,240,96,.00) 0%,transparent 65%);
+  pointer-events:none;opacity:0;
+  animation:fadein 1s ease 2s forwards, fadeout-slow 1.5s ease 6s forwards;
+}
+
+/* center dot */
+.c-center{opacity:0;animation:popin .3s ease .1s forwards;transform-origin:160px 138px;}
+/* outer ring */
+.r-outer{
+  stroke-dasharray:251.3;stroke-dashoffset:251.3;
+  animation:draw-ring 1s ease .2s forwards, pulse-ring 4s ease 3s infinite;
+}
+/* primary nodes + spokes */
+.node-p{opacity:0;}.spoke{opacity:0;}
+.node-p.n0,.spoke.s0{animation:fadein .3s ease 1.5s forwards;}
+.node-p.n1,.spoke.s1{animation:fadein .3s ease 1.7s forwards;}
+.node-p.n2,.spoke.s2{animation:fadein .3s ease 1.9s forwards;}
+.node-p.n3,.spoke.s3{animation:fadein .3s ease 2.1s forwards;}
+.node-p.n4,.spoke.s4{animation:fadein .3s ease 2.3s forwards;}
+.node-p.n5,.spoke.s5{animation:fadein .3s ease 2.5s forwards;}
+/* secondary rings */
+.ring-s{stroke-dasharray:125.7;stroke-dashoffset:125.7;}
+.ring-s1{animation:draw-ring .7s ease 1.6s forwards;}
+.ring-s2{animation:draw-ring .7s ease 1.8s forwards;}
+.ring-s3{animation:draw-ring .7s ease 2.0s forwards;}
+.ring-s4{animation:draw-ring .7s ease 2.2s forwards;}
+.ring-s5{animation:draw-ring .7s ease 2.4s forwards;}
+.ring-s6{animation:draw-ring .7s ease 2.6s forwards;}
+/* secondary nodes */
+.node-s{opacity:0;}.spoke-s{opacity:0;}
+.ns-g0 .node-s,.ss-g0 .spoke-s{animation:fadein .25s ease 2.0s forwards;}
+.ns-g1 .node-s,.ss-g1 .spoke-s{animation:fadein .25s ease 2.2s forwards;}
+.ns-g2 .node-s,.ss-g2 .spoke-s{animation:fadein .25s ease 2.4s forwards;}
+.ns-g3 .node-s,.ss-g3 .spoke-s{animation:fadein .25s ease 2.6s forwards;}
+.ns-g4 .node-s,.ss-g4 .spoke-s{animation:fadein .25s ease 2.8s forwards;}
+.ns-g5 .node-s,.ss-g5 .spoke-s{animation:fadein .25s ease 3.0s forwards;}
+/* tertiary rings */
+.ring-t{stroke-dasharray:56.5;stroke-dashoffset:56.5;}
+.ring-t1{animation:draw-ring .5s ease 2.8s forwards;}
+.ring-t2{animation:draw-ring .5s ease 2.9s forwards;}
+.ring-t3{animation:draw-ring .5s ease 3.0s forwards;}
+.ring-t4{animation:draw-ring .5s ease 3.1s forwards;}
+.ring-t5{animation:draw-ring .5s ease 3.2s forwards;}
+.ring-t6{animation:draw-ring .5s ease 3.3s forwards;}
+/* tertiary nodes */
+.node-t{opacity:0;}
+.nt-g0 .node-t{animation:fadein .3s ease 3.0s forwards;}
+.nt-g1 .node-t{animation:fadein .3s ease 3.1s forwards;}
+.nt-g2 .node-t{animation:fadein .3s ease 3.2s forwards;}
+.nt-g3 .node-t{animation:fadein .3s ease 3.3s forwards;}
+.nt-g4 .node-t{animation:fadein .3s ease 3.4s forwards;}
+.nt-g5 .node-t{animation:fadein .3s ease 3.5s forwards;}
+/* green accent dot */
+.c-accent{opacity:0;animation:fadein .4s ease 3.4s forwards;}
+/* hero text stagger */
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;animation:fadein .6s ease 3.8s forwards;}
+.hero-eyebrow span{width:5px;height:5px;background:var(--accent);border-radius:50%;display:inline-block;animation:blink 2.4s ease-in-out 4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+h1{font-size:clamp(2.4rem,4.5vw,4rem);font-weight:200;line-height:1.06;letter-spacing:-.03em;color:var(--text);margin-bottom:1.75rem;opacity:0;animation:fadein .7s ease 4s forwards;}
+h1 em{font-style:normal;color:var(--accent);}
+.hero-body{font-size:.95rem;color:var(--muted);line-height:1.8;max-width:420px;margin-bottom:2.5rem;opacity:0;animation:fadein .7s ease 4.2s forwards;}
+.btn-group{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;opacity:0;animation:fadein .7s ease 4.4s forwards;}
+
+/* BUTTONS */
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#080808;font-size:.82rem;font-weight:500;padding:.8rem 1.6rem;border-radius:2px;text-decoration:none;transition:background .2s,transform .15s;}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);}
+.btn-ghost{font-size:.78rem;font-weight:300;color:var(--muted);text-decoration:none;letter-spacing:.04em;border-bottom:1px solid var(--border2);padding-bottom:1px;transition:color .2s,border-color .2s;}
+.btn-ghost:hover{color:var(--text);border-color:var(--muted2);}
+
+/* PHONE */
+.phone-wrap{position:relative;}
+.phone{width:340px;margin:0 auto;background:var(--bg2);border:1px solid var(--border2);border-radius:28px;overflow:hidden;position:relative;z-index:2;box-shadow:0 0 60px rgba(200,240,96,0.03),0 24px 60px rgba(0,0,0,0.5);}
+.phone-bar{background:#111;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border);border-radius:28px 28px 0 0;}
+.p-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;color:#080808;flex-shrink:0;}
+.p-name{font-size:.75rem;font-weight:400;color:var(--text);}
+.p-status{font-size:.6rem;color:var(--accent);}
+.chat{padding:.875rem;display:flex;flex-direction:column;gap:.6rem;}
+.msg{max-width:88%;width:fit-content;padding:.55rem .8rem;border-radius:14px;font-size:.72rem;line-height:1.55;opacity:0;transform:translateY(6px);animation:pop .25s ease forwards;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word;box-sizing:border-box;}
+.msg.them{background:var(--bg3);color:#d4d0cc;border-bottom-left-radius:3px;align-self:flex-start;}
+.msg.me{background:#182808;border:1px solid rgba(200,240,96,.14);color:#b0d840;border-bottom-right-radius:3px;align-self:flex-end;}
+.msg:nth-child(1){animation-delay:.4s;}.msg:nth-child(2){animation-delay:1.1s;}.msg:nth-child(3){animation-delay:1.8s;}.msg:nth-child(4){animation-delay:2.5s;}.msg:nth-child(5){animation-delay:3.2s;}
+@keyframes pop{to{opacity:1;transform:translateY(0);}}
+.chat-footer{padding:.5rem .875rem .875rem;display:flex;align-items:center;gap:.4rem;}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--muted);font-family:inherit;resize:none;overflow:hidden;}
+.chat-send{width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* TICKER */
+.ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.9rem 0;background:var(--bg2);}
+.ticker-track{display:flex;animation:ticker 32s linear infinite;white-space:nowrap;}
+.ticker-item{display:inline-flex;align-items:center;gap:.75rem;padding:0 2.5rem;font-size:.7rem;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.ticker-dot{width:3px;height:3px;background:var(--accent);border-radius:50%;flex-shrink:0;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* STATS */
+.stats-section{padding:5rem 0;position:relative;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.stat-cell{background:var(--bg);padding:2.5rem 2rem;position:relative;}
+.stat-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,96,.3),transparent);}
+.stat-num{font-size:3rem;font-weight:200;letter-spacing:-.04em;color:var(--accent);display:block;line-height:1;margin-bottom:.5rem;}
+.stat-label{font-size:.72rem;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+/* HOW */
+.how-section{padding:6rem 0;position:relative;}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;margin-top:4rem;}
+.steps-list{display:flex;flex-direction:column;}
+.step-row{display:grid;grid-template-columns:48px 1fr;gap:1.25rem;padding:1.75rem 0;border-top:1px solid var(--border);}
+.step-row:last-child{border-bottom:1px solid var(--border);}
+.step-num-col{display:flex;flex-direction:column;align-items:center;}
+.step-n{font-size:.65rem;font-weight:400;letter-spacing:.1em;color:var(--muted2);}
+.step-line{width:1px;flex:1;background:var(--border);margin-top:.5rem;}
+.step-row:last-child .step-line{display:none;}
+.step-title{font-size:.95rem;font-weight:400;color:var(--text);margin-bottom:.4rem;}
+.step-body{font-size:.82rem;color:var(--muted);line-height:1.75;}
+.how-visual{position:sticky;top:100px;display:flex;align-items:center;justify-content:center;}
+
+/* WHO */
+.who-section{padding:6rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;}
+.niches{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3.5rem;}
+.niche{background:var(--bg2);padding:2rem;transition:background .2s;}
+.niche:hover{background:var(--bg3);}
+.niche-icon{font-size:1.6rem;margin-bottom:1rem;display:block;color:var(--accent);}
+.niche h4{font-size:.88rem;font-weight:400;color:var(--text);margin-bottom:.4rem;}
+.niche p{font-size:.78rem;color:var(--muted);line-height:1.7;}
+
+/* PRICING */
+.pricing-section{padding:6rem 0;position:relative;}
+.pricing-inner{max-width:560px;margin:3.5rem auto 0;}
+.pricing-card{border:1px solid var(--border2);background:var(--bg2);position:relative;overflow:hidden;}
+.pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--accent) 40%,var(--accent) 60%,transparent 100%);opacity:.5;}
+.pricing-wm{position:absolute;right:-40px;top:-40px;width:200px;height:200px;opacity:.04;pointer-events:none;}
+.pricing-head{padding:2.5rem;border-bottom:1px solid var(--border);}
+.pricing-badge{display:inline-block;border:1px solid rgba(200,240,96,.25);color:var(--accent);font-size:.62rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;padding:.25rem .75rem;border-radius:1px;margin-bottom:1.5rem;}
+.price-main{font-size:2.6rem;font-weight:200;letter-spacing:-.03em;color:var(--accent);line-height:1;margin-bottom:.4rem;}
+.price-sub{font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;}
+.price-after{background:var(--bg3);border:1px solid var(--border);padding:.875rem 1rem;font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.price-after strong{color:var(--text);font-weight:400;}
+.pricing-body{padding:2rem 2.5rem;}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem;}
+.feature-list li{display:flex;align-items:center;gap:.75rem;font-size:.82rem;color:var(--muted);}
+.feat-dot{width:4px;height:4px;background:var(--accent);border-radius:50%;flex-shrink:0;opacity:.7;}
+.btn-block{display:block;width:100%;text-align:center;background:var(--accent);color:#080808;font-size:.85rem;font-weight:500;padding:.95rem;border-radius:2px;text-decoration:none;letter-spacing:.02em;transition:background .2s,transform .15s;}
+.btn-block:hover{background:var(--accent2);transform:translateY(-1px);}
+
+/* FAQ */
+.faq-section{padding:6rem 0;border-top:1px solid var(--border);position:relative;}
+.faq-list{max-width:640px;margin:3.5rem auto 0;}
+.faq-item{border-top:1px solid var(--border);padding:1.5rem 0;}
+.faq-item:last-child{border-bottom:1px solid var(--border);}
+.faq-q{font-size:.9rem;font-weight:400;color:var(--text);margin-bottom:.5rem;}
+.faq-a{font-size:.8rem;color:var(--muted);line-height:1.8;}
+
+/* CTA */
+.cta-section{padding:8rem 0;text-align:center;position:relative;border-top:1px solid var(--border);}
+.cta-section h2{margin-bottom:1rem;}
+.cta-section p{color:var(--muted);font-size:.9rem;margin-bottom:2.5rem;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:var(--bg2);position:relative;}
+.footer-brand{display:flex;align-items:center;gap:.75rem;}
+.footer-brand svg{width:22px;height:22px;}
+.footer-brand span{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s;}
+.footer-links a:hover{color:var(--text);}
+
+/* SCROLL FADE — no overflow:hidden on parents so observer fires correctly */
+.fade{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;}
+.fade.on{opacity:1;transform:translateY(0);}
+.fade.d1{transition-delay:.1s;}.fade.d2{transition-delay:.2s;}.fade.d3{transition-delay:.3s;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:3rem;}
+  .logo-stage{width:min(80vw,380px);height:min(80vw,380px);order:-1;}
+  h1{font-size:2.4rem;}
+  .how-grid{grid-template-columns:1fr;gap:3rem;}
+  .how-visual{position:static;display:flex;}
+  .niches{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr;}
+  nav{padding:0 1.25rem;}
+  .nav-links a:not(.btn-cta){display:none;}
+  footer{flex-direction:column;gap:1rem;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="logo-nav">
+    <svg viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+      <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="1" opacity="0.9"/>
+      <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
+      <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.6" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.6" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.6" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.6" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.6" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.6" opacity="0.4"/>
+      <circle cx="160" cy="98" r="18" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.5"/><circle cx="194.6" cy="118" r="18" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.5"/><circle cx="194.6" cy="158" r="18" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.5"/><circle cx="160" cy="178" r="18" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.5"/><circle cx="125.4" cy="158" r="18" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.5"/><circle cx="125.4" cy="118" r="18" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.5"/>
+    </svg>
+    <span class="logo-wordmark">Z E R O</span>
+  </a>
+  <div class="nav-links">
+    <a href="#proceso">Proceso</a>
+    <a href="#precios">Precios</a>
+    <a href="https://wa.me/56XXXXXXXXX" class="btn-cta">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Probar gratis
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- text left -->
+      <div>
+        <div class="hero-eyebrow"><span></span>Agentes de IA · Santiago, Chile</div>
+        <h1>Nunca pierdas<br>un cliente por<br><em>no responder</em><br>a tiempo</h1>
+        <p class="hero-body">Tu agente responde en WhatsApp las 24 horas, califica cada consulta, agenda citas y te avisa cuando hay alguien listo para comprar. Sin contratos. Sin riesgo.</p>
+        <div class="btn-group">
+          <a href="https://wa.me/56XXXXXXXXX" class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            2 semanas gratis
+          </a>
+          <a href="#proceso" class="btn-ghost">Ver cómo funciona →</a>
+        </div>
+      </div>
+
+      <!-- animated logo right — bigger, slower fade -->
+      <div class="logo-stage">
+        <div class="logo-glow"></div>
+        <svg id="logo-anim" viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg">
+
+          <circle class="c-center" cx="160" cy="138" r="4" fill="#fff" style="transform-origin:160px 138px;"/>
+          <circle class="r-outer" cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.9"/>
+          <circle class="c-accent" cx="160" cy="138" r="4" fill="#c8f060"/>
+
+          <line class="spoke s0" x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
+          <line class="spoke s1" x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
+          <line class="spoke s2" x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
+          <line class="spoke s3" x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
+          <line class="spoke s4" x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
+          <line class="spoke s5" x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
+
+          <circle class="node-p n0" cx="160" cy="98"   r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n1" cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n2" cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n3" cx="160" cy="178"  r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n4" cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n5" cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
+
+          <circle class="ring-s ring-s1" cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
+          <circle class="ring-s ring-s2" cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
+          <circle class="ring-s ring-s3" cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
+          <circle class="ring-s ring-s4" cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
+          <circle class="ring-s ring-s5" cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
+          <circle class="ring-s ring-s6" cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
+
+          <g class="ns-g0 ss-g0">
+            <line class="spoke-s" x1="160" y1="98" x2="160" y2="80"  stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="98" x2="178" y2="98"  stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="98" x2="160" y2="116" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="98" x2="142" y2="98"  stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="160" cy="78"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="180" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="160" cy="118" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="140" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+          </g>
+          <g class="ns-g1 ss-g1">
+            <line class="spoke-s" x1="194.6" y1="118" x2="194.6" y2="100" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="194.6" y1="118" x2="212.6" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="194.6" y1="118" x2="194.6" y2="136" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="194.6" y1="118" x2="176.6" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="194.6" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="214.6" cy="118" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="194.6" cy="138" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="174.6" cy="118" r="2" fill="#fff" opacity="0.65"/>
+          </g>
+          <g class="ns-g2 ss-g2">
+            <line class="spoke-s" x1="194.6" y1="158" x2="194.6" y2="140" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="194.6" y1="158" x2="212.6" y2="158" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="194.6" y1="158" x2="194.6" y2="176" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="194.6" y1="158" x2="176.6" y2="158" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="194.6" cy="138" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="214.6" cy="158" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="194.6" cy="178" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="174.6" cy="158" r="2" fill="#fff" opacity="0.65"/>
+          </g>
+          <g class="ns-g3 ss-g3">
+            <line class="spoke-s" x1="160" y1="178" x2="160" y2="160" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="178" x2="178" y2="178" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="178" x2="160" y2="196" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="178" x2="142" y2="178" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="160" cy="158" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="180" cy="178" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="160" cy="198" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="140" cy="178" r="2" fill="#fff" opacity="0.65"/>
+          </g>
+          <g class="ns-g4 ss-g4">
+            <line class="spoke-s" x1="125.4" y1="158" x2="125.4" y2="140" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="125.4" y1="158" x2="143.4" y2="158" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="125.4" y1="158" x2="125.4" y2="176" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="125.4" y1="158" x2="107.4" y2="158" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="125.4" cy="138" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="145.4" cy="158" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="125.4" cy="178" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="105.4" cy="158" r="2" fill="#fff" opacity="0.65"/>
+          </g>
+          <g class="ns-g5 ss-g5">
+            <line class="spoke-s" x1="125.4" y1="118" x2="125.4" y2="100" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="125.4" y1="118" x2="143.4" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="125.4" y1="118" x2="125.4" y2="136" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="125.4" y1="118" x2="107.4" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="125.4" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="145.4" cy="118" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="125.4" cy="138" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="105.4" cy="118" r="2" fill="#fff" opacity="0.65"/>
+          </g>
+
+          <circle class="ring-t ring-t1" cx="160"   cy="78"  r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t2" cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t3" cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t4" cx="160"   cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t5" cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t6" cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+
+          <g class="nt-g0"><circle class="node-t" cx="160" cy="69"  r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="169" cy="78"  r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="151" cy="78"  r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="160" cy="87"  r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g1"><circle class="node-t" cx="214.6" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="223.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="205.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="214.6" cy="127" r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g2"><circle class="node-t" cx="214.6" cy="149" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="223.6" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="205.6" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="214.6" cy="167" r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g3"><circle class="node-t" cx="160" cy="189" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="169" cy="198" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="151" cy="198" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="160" cy="207" r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g4"><circle class="node-t" cx="105.4" cy="149" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="114.4" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="96.4"  cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="105.4" cy="167" r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g5"><circle class="node-t" cx="105.4" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="114.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="96.4"  cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="105.4" cy="127" r="1.2" fill="#fff" opacity="0.35"/></g>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot"></span>Respuesta en menos de 5 segundos</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Disponible 24 horas, 7 días</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Conectado a tu WhatsApp</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Agenda citas automáticamente</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Alerta cuando hay un lead listo</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Sin contrato ni permanencia</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>2 semanas completamente gratis</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Personalizado para tu negocio</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Respuesta en menos de 5 segundos</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Disponible 24 horas, 7 días</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Conectado a tu WhatsApp</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Agenda citas automáticamente</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Alerta cuando hay un lead listo</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Sin contrato ni permanencia</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>2 semanas completamente gratis</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Personalizado para tu negocio</span>
+  </div>
+</div>
+
+<!-- ═══ STATS — ghost logo 1: dot only ═══ -->
+<section class="stats-section">
+  <svg class="gl" style="right:-80px;top:50%;transform:translateY(-50%);width:260px;height:260px;opacity:0.05;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
+  </svg>
+  <div class="container">
+    <div class="stats-grid fade">
+      <div class="stat-cell"><span class="stat-num">&lt;5s</span><span class="stat-label">Tiempo de respuesta</span></div>
+      <div class="stat-cell"><span class="stat-num">24/7</span><span class="stat-label">Disponibilidad</span></div>
+      <div class="stat-cell"><span class="stat-num">48h</span><span class="stat-label">De cero a funcionando</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS — ghost logo 2: dot + ring + spokes ═══ -->
+<section class="how-section" id="proceso">
+  <svg class="gl" style="left:-100px;top:40%;transform:translateY(-50%);width:300px;height:300px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
+    <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+  <!-- ghost logo 3: dot + ring + secondary rings (no nodes) top-right -->
+  <svg class="gl" style="right:-60px;bottom:0;width:240px;height:240px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
+    <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.65"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.65"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.65"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.65"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.65"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.65"/>
+  </svg>
+  <div class="container">
+    <div class="fade">
+      <div class="section-tag">Proceso</div>
+      <h2>De cero a funcionando<br><em>en 48 horas</em></h2>
+    </div>
+    <div class="how-grid">
+      <div class="steps-list">
+        <div class="step-row fade d1">
+          <div class="step-num-col"><span class="step-n">01</span><div class="step-line"></div></div>
+          <div><div class="step-title">Nos cuentas tu negocio</div><div class="step-body">Una llamada de 15 minutos. Te preguntamos sobre tus servicios, tu forma de comunicarte, y qué preguntas te llegan siempre.</div></div>
+        </div>
+        <div class="step-row fade d2">
+          <div class="step-num-col"><span class="step-n">02</span><div class="step-line"></div></div>
+          <div><div class="step-title">Armamos tu agente</div><div class="step-body">Construimos un agente con la personalidad de tu negocio. Conoce tus servicios, tus precios, tu disponibilidad — y sabe cuándo derivarte a ti.</div></div>
+        </div>
+        <div class="step-row fade d3">
+          <div class="step-num-col"><span class="step-n">03</span></div>
+          <div><div class="step-title">Lo conectamos a tu WhatsApp</div><div class="step-body">Desde ese momento responde solo. Cuando hay un cliente listo para comprar, te avisamos al instante. Tú solo apareces cuando importa.</div></div>
+        </div>
+      </div>
+      <div class="how-visual fade">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-bar">
+              <div class="p-avatar">ZI</div>
+              <div>
+                <div class="p-name">Agente Zero IA</div>
+                <div class="p-status">&#9679; en línea</div>
+              </div>
+            </div>
+            <div class="chat" id="chat-messages" style="min-height:420px;overflow-y:auto;max-height:420px;"></div>
+            <div class="chat-footer">
+              <textarea class="chat-input" id="chat-input" rows="1" placeholder="Escribe un mensaje…" style="background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--text);font-family:inherit;outline:none;">
+              <div class="chat-send" id="chat-send" style="cursor:pointer;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#080808"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHO — ghost logos 4 & 5 ═══ -->
+<section class="who-section">
+  <!-- ghost 4: left, spokes only no secondary rings -->
+  <svg class="gl" style="left:-70px;top:20%;width:280px;height:280px;opacity:0.05;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
+    <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+  <!-- ghost 5: right bottom, secondary rings + secondary nodes -->
+  <svg class="gl" style="right:-90px;bottom:-40px;width:360px;height:360px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8"/>
+    <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+    <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/>
+    <circle cx="160" cy="78" r="2" fill="#fff" opacity="0.6"/><circle cx="180" cy="98" r="2" fill="#fff" opacity="0.6"/><circle cx="140" cy="98" r="2" fill="#fff" opacity="0.6"/><circle cx="214.6" cy="118" r="2" fill="#fff" opacity="0.6"/><circle cx="174.6" cy="118" r="2" fill="#fff" opacity="0.6"/><circle cx="214.6" cy="158" r="2" fill="#fff" opacity="0.6"/>
+  </svg>
+  <div class="container">
+    <div class="fade">
+      <div class="section-tag">Para quién es</div>
+      <h2>Cualquier negocio que<br>recibe consultas por <em>WhatsApp</em></h2>
+    </div>
+    <div class="niches">
+      <div class="niche fade d1"><span class="niche-icon"><i class="ph ph-hospital"></i></span><h4>Clínicas y centros médicos</h4><p>Agenda citas, responde preguntas sobre procedimientos, confirma disponibilidad. Sin interrumpir tu atención.</p></div>
+      <div class="niche fade d2"><span class="niche-icon"><i class="ph ph-fork-knife"></i></span><h4>Restaurantes y delivery</h4><p>Recibe pedidos, responde sobre el menú, gestiona reservas. Nadie se queda sin respuesta.</p></div>
+      <div class="niche fade d1"><span class="niche-icon"><i class="ph ph-scales"></i></span><h4>Servicios profesionales</h4><p>Abogados, contadores, consultores — califica si el caso es para ti antes de tomar la llamada.</p></div>
+      <div class="niche fade d2"><span class="niche-icon"><i class="ph ph-storefront"></i></span><h4>Tiendas y comercio</h4><p>Stock, precios, despachos, métodos de pago — respondido al instante, cuando tú no puedes estar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING — ghost logos 6 & 7 ═══ -->
+<section class="pricing-section" id="precios">
+  <!-- ghost 6: full logo left side, large, very faint -->
+  <svg class="gl" style="left:-120px;top:50%;transform:translateY(-50%);width:420px;height:420px;opacity:0.035;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8"/>
+    <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+    <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/>
+    <circle cx="160" cy="78" r="2" fill="#fff"/><circle cx="180" cy="98" r="2" fill="#fff"/><circle cx="140" cy="98" r="2" fill="#fff"/><circle cx="214.6" cy="118" r="2" fill="#fff"/><circle cx="174.6" cy="118" r="2" fill="#fff"/><circle cx="214.6" cy="158" r="2" fill="#fff"/><circle cx="174.6" cy="158" r="2" fill="#fff"/><circle cx="160" cy="198" r="2" fill="#fff"/><circle cx="140" cy="178" r="2" fill="#fff"/><circle cx="105.4" cy="158" r="2" fill="#fff"/><circle cx="105.4" cy="118" r="2" fill="#fff"/>
+    <circle cx="160" cy="78" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="160" cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/>
+  </svg>
+  <div class="container" style="text-align:center;">
+    <div class="fade">
+      <div class="section-tag" style="justify-content:center;">Precio</div>
+      <h2>Simple.<br><em>Sin sorpresas.</em></h2>
+    </div>
+    <div class="pricing-inner">
+      <div class="pricing-card fade">
+        <!-- ghost 7: inside card watermark -->
+        <svg class="pricing-wm" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+          <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="1"/>
+          <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
+          <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.6"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.6"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.6"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.6"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.6"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.6"/>
+        </svg>
+        <div class="pricing-head">
+          <div class="pricing-badge">Oferta de lanzamiento</div>
+          <div class="price-main">2 semanas gratis</div>
+          <div class="price-sub">Sin tarjeta. Sin contrato. Solo para ver si te sirve.</div>
+          <div class="price-after"><span>Después, si quieres seguir</span><span><strong>$72.000</strong> activación + <strong>$28.000</strong>/mes</span></div>
+        </div>
+        <div class="pricing-body">
+          <ul class="feature-list">
+            <li><span class="feat-dot"></span>Agente personalizado para tu negocio</li>
+            <li><span class="feat-dot"></span>Conectado a tu WhatsApp</li>
+            <li><span class="feat-dot"></span>Alertas de leads listos para comprar</li>
+            <li><span class="feat-dot"></span>Agenda citas automáticamente</li>
+            <li><span class="feat-dot"></span>Ajustes y mejoras incluidos</li>
+            <li><span class="feat-dot"></span>Soporte directo por WhatsApp</li>
+          </ul>
+          <a href="https://wa.me/56XXXXXXXXX" class="btn-block">Empezar las 2 semanas gratis →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ — ghost logo 8 ═══ -->
+<section class="faq-section">
+  <svg class="gl" style="right:-60px;top:50%;transform:translateY(-50%);width:340px;height:340px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8"/>
+    <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+    <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/>
+    <circle cx="160" cy="78" r="2" fill="#fff" opacity="0.6"/><circle cx="180" cy="98" r="2" fill="#fff" opacity="0.6"/><circle cx="140" cy="98" r="2" fill="#fff" opacity="0.6"/><circle cx="214.6" cy="118" r="2" fill="#fff" opacity="0.6"/><circle cx="174.6" cy="118" r="2" fill="#fff" opacity="0.6"/><circle cx="214.6" cy="158" r="2" fill="#fff" opacity="0.6"/><circle cx="174.6" cy="158" r="2" fill="#fff" opacity="0.6"/><circle cx="160" cy="198" r="2" fill="#fff" opacity="0.6"/><circle cx="140" cy="178" r="2" fill="#fff" opacity="0.6"/><circle cx="105.4" cy="158" r="2" fill="#fff" opacity="0.6"/><circle cx="105.4" cy="118" r="2" fill="#fff" opacity="0.6"/>
+    <circle cx="160" cy="78" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="160" cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/>
+  </svg>
+  <div class="container" style="text-align:center;">
+    <div class="fade">
+      <div class="section-tag" style="justify-content:center;">Preguntas</div>
+      <h2>Lo que siempre<br><em>nos preguntan</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item fade"><div class="faq-q">¿Necesito saber de tecnología?</div><div class="faq-a">No. Nosotros nos encargamos de todo. Tú solo nos cuentas cómo funciona tu negocio y el agente hace el resto.</div></div>
+      <div class="faq-item fade"><div class="faq-q">¿El agente puede equivocarse?</div><div class="faq-a">Puede tener dudas, como cualquier persona nueva en tu equipo. Cuando no sabe algo, te avisa a ti en vez de inventar. Nunca deja a un cliente sin respuesta.</div></div>
+      <div class="faq-item fade"><div class="faq-q">¿Qué pasa si quiero cambiar algo?</div><div class="faq-a">Los ajustes están incluidos. Si cambias tus servicios, precios u horarios, nos avisas y lo actualizamos.</div></div>
+      <div class="faq-item fade"><div class="faq-q">¿Puedo cancelar cuando quiera?</div><div class="faq-a">Sí. No hay contrato ni permanencia. Si decides que no lo quieres, lo desactivamos sin preguntas.</div></div>
+      <div class="faq-item fade"><div class="faq-q">¿En cuánto tiempo está funcionando?</div><div class="faq-a">48 horas desde la llamada inicial. Ese mismo día tienes tu agente respondiendo en WhatsApp.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA — ghost logo 9 (centered, largest, most complete) ═══ -->
+<section class="cta-section">
+  <svg class="gl" style="top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;opacity:0.06;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8"/>
+    <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5"/>
+    <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/>
+    <circle cx="160" cy="78" r="2" fill="#fff"/><circle cx="180" cy="98" r="2" fill="#fff"/><circle cx="140" cy="98" r="2" fill="#fff"/><circle cx="214.6" cy="118" r="2" fill="#fff"/><circle cx="174.6" cy="118" r="2" fill="#fff"/><circle cx="214.6" cy="158" r="2" fill="#fff"/><circle cx="174.6" cy="158" r="2" fill="#fff"/><circle cx="160" cy="198" r="2" fill="#fff"/><circle cx="140" cy="178" r="2" fill="#fff"/><circle cx="105.4" cy="158" r="2" fill="#fff"/><circle cx="105.4" cy="118" r="2" fill="#fff"/>
+    <circle cx="160" cy="78" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="160" cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+    <circle cx="160" cy="69" r="1.2" fill="#fff" opacity="0.35"/><circle cx="169" cy="78" r="1.2" fill="#fff" opacity="0.35"/><circle cx="151" cy="78" r="1.2" fill="#fff" opacity="0.35"/><circle cx="160" cy="87" r="1.2" fill="#fff" opacity="0.35"/>
+    <circle cx="214.6" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle cx="223.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="205.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="214.6" cy="127" r="1.2" fill="#fff" opacity="0.35"/>
+    <circle cx="105.4" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle cx="114.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="96.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="105.4" cy="127" r="1.2" fill="#fff" opacity="0.35"/>
+  </svg>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="fade">
+      <h2>¿Tu negocio está perdiendo clientes<br>mientras tú duermes?</h2>
+      <p>Dos semanas para comprobarlo. Sin pagar nada.</p>
+      <a href="https://wa.me/56XXXXXXXXX" class="btn-primary" style="display:inline-flex;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Hablar con Hector por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">
+    <svg viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+      <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
+      <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
+      <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+    </svg>
+    <span>Z E R O &nbsp; I A</span>
+  </div>
+  <div style="font-size:.68rem;color:var(--muted);letter-spacing:.06em;">Santiago, Chile · 2025</div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+    <a href="/cdn-cgi/l/email-protection#462e292a27063c233429682f27"><span class="__cf_email__" data-cfemail="335b5c5f52734956415c1d5a52">[email&#160;protected]</span></a>
+  </div>
+</footer>
+
+<script>
+/* Scroll fade — root:null observes against viewport, no overflow:hidden interference */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+/* ── LIVE CHAT ── */
+const WEBHOOK = 'https://hook.us2.make.com/rars6xjdd1cd86vig1h2ytg9qtetdldm';
+const SESSION_ID = 'web_' + Math.random().toString(36).slice(2, 10);
+const chatBox = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+
+function addMsg(text, from) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + (from === 'me' ? 'me' : 'them');
+  div.style.opacity = '1';
+  div.style.transform = 'none';
+  div.style.animation = 'none';
+  div.style.whiteSpace = 'pre-wrap';
+  div.textContent = text;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function addTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg them';
+  div.id = 'typing-indicator';
+  div.style.opacity = '1';
+  div.style.transform = 'none';
+  div.style.animation = 'none';
+  div.textContent = '...';
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = '';
+  addMsg(text, 'me');
+  addTyping();
+  chatSend.style.pointerEvents = 'none';
+  chatInput.disabled = true;
+  try {
+    const res = await fetch(WEBHOOK, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: text, session_id: SESSION_ID})
+    });
+    const raw = await res.text();
+    removeTyping();
+    try {
+      const data = JSON.parse(raw);
+      addMsg(data.respuesta || raw, 'them');
+    } catch(e) {
+      addMsg(raw || 'Sin respuesta', 'them');
+    }
+  } catch(e) {
+    removeTyping();
+    addMsg('Sin conexion. Intenta de nuevo.', 'them');
+  }
+  chatSend.style.pointerEvents = 'auto';
+  chatInput.disabled = false;
+  chatInput.focus();
+}
+
+chatSend.addEventListener('click', sendMessage);
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+
+(async () => {
+  addTyping();
+  try {
+    const res = await fetch(WEBHOOK, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: 'hola', session_id: SESSION_ID})
+    });
+    const raw = await res.text();
+    removeTyping();
+    try {
+      const data = JSON.parse(raw);
+      addMsg(data.respuesta || raw, 'them');
+    } catch(e) {
+      addMsg(raw || 'Hola', 'them');
+    }
+  } catch(e) {
+    removeTyping();
+    addMsg('Hola, soy Sofia de Zero IA.', 'them');
+  }
+})();
+</script>
+</body>
+</html>
