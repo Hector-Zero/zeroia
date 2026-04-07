@@ -757,6 +757,38 @@ chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; cha
     addMsg('Hola, soy Sofia de Zero IA.', 'them');
   }
 })();
+  /* ── NODOS VERDES DINÁMICOS ── */
+const accent = '#c8f060';
+const white = '#fff';
+const maxGreen = 7;
+
+const nodeSelectors = [
+  '.node-p', '.node-s', '.node-t'
+];
+
+function getAllNodes() {
+  return [...document.querySelectorAll('.node-p, .node-s, .node-t')];
+}
+
+function updateNodes() {
+  const nodes = getAllNodes();
+  const greenNodes = nodes.filter(n => n.getAttribute('fill') === accent);
+  
+  if (greenNodes.length >= maxGreen) {
+    const toWhite = greenNodes[Math.floor(Math.random() * greenNodes.length)];
+    toWhite.style.transition = 'fill 0.8s ease';
+    toWhite.setAttribute('fill', white);
+  } else {
+    const whiteNodes = nodes.filter(n => n.getAttribute('fill') !== accent);
+    if (whiteNodes.length > 0) {
+      const toGreen = whiteNodes[Math.floor(Math.random() * whiteNodes.length)];
+      toGreen.style.transition = 'fill 0.8s ease';
+      toGreen.setAttribute('fill', accent);
+    }
+  }
+}
+
+setInterval(updateNodes, 600);
 </script>
 </body>
 </html>
