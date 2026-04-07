@@ -40,7 +40,7 @@ h2 em{font-style:normal;color:var(--accent);}
 .gl{position:absolute;pointer-events:none;overflow:visible;}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 80px;position:relative;overflow:clip;}
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 80px;position:relative;overflow:hidden;}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;position:relative;z-index:2;}
 
 /* animated logo stage — roughly half the viewport */
@@ -66,7 +66,7 @@ h2 em{font-style:normal;color:var(--accent);}
 }
 .logo-glow{
   position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 50%,rgba(200,240,96,.00) 0%,transparent 65%);
+  background:radial-gradient(circle at 50% 50%,rgba(200,240,96,.07) 0%,transparent 65%);
   pointer-events:none;opacity:0;
   animation:fadein 1s ease 2s forwards, fadeout-slow 1.5s ease 6s forwards;
 }
@@ -137,8 +137,8 @@ h1 em{font-style:normal;color:var(--accent);}
 
 /* PHONE */
 .phone-wrap{position:relative;}
-.phone{width:340px;margin:0 auto;background:var(--bg2);border:1px solid var(--border2);border-radius:28px;overflow:hidden;position:relative;z-index:2;box-shadow:0 0 60px rgba(200,240,96,0.03),0 24px 60px rgba(0,0,0,0.5);}
-.phone-bar{background:#111;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border);border-radius:28px 28px 0 0;}
+.phone{width:340px;margin:0 auto;background:var(--bg2);border:1px solid var(--border2);border-radius:28px;overflow:hidden;position:relative;z-index:2;box-shadow:0 0 60px rgba(200,240,96,0.07),0 24px 60px rgba(0,0,0,0.5);}
+.phone-bar{background:#111;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border);}
 .p-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;color:#080808;flex-shrink:0;}
 .p-name{font-size:.75rem;font-weight:400;color:var(--text);}
 .p-status{font-size:.6rem;color:var(--accent);}
@@ -149,7 +149,7 @@ h1 em{font-style:normal;color:var(--accent);}
 .msg:nth-child(1){animation-delay:.4s;}.msg:nth-child(2){animation-delay:1.1s;}.msg:nth-child(3){animation-delay:1.8s;}.msg:nth-child(4){animation-delay:2.5s;}.msg:nth-child(5){animation-delay:3.2s;}
 @keyframes pop{to{opacity:1;transform:translateY(0);}}
 .chat-footer{padding:.5rem .875rem .875rem;display:flex;align-items:center;gap:.4rem;}
-.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--muted);font-family:inherit;resize:none;overflow:hidden;}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--muted);font-family:inherit;}
 .chat-send{width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
 /* TICKER */
@@ -488,7 +488,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
             </div>
             <div class="chat" id="chat-messages" style="min-height:420px;overflow-y:auto;max-height:420px;"></div>
             <div class="chat-footer">
-              <textarea class="chat-input" id="chat-input" rows="1" placeholder="Escribe un mensaje…" style="background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--text);font-family:inherit;outline:none;">
+              <input type="text" class="chat-input" id="chat-input" placeholder="Escribe un mensaje…" style="background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--text);font-family:inherit;outline:none;">
               <div class="chat-send" id="chat-send" style="cursor:pointer;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="#080808"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
               </div>
