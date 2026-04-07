@@ -679,7 +679,15 @@ const chatBox = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
 const chatSend = document.getElementById('chat-send');
 const phoneEl = document.querySelector('.phone');
-setTimeout(() => { phoneEl.classList.add('phone-pulse'); }, 5000);
+const phoneObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      phoneEl.classList.add('phone-pulse');
+      phoneObs.unobserve(phoneEl);
+    }
+  });
+}, { threshold: 0.5 });
+phoneObs.observe(phoneEl);
 chatInput.addEventListener('focus', () => { phoneEl.classList.remove('phone-pulse'); phoneEl.style.animation = 'none'; });
 
 function addMsg(text, from) {
