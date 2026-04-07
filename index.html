@@ -757,36 +757,39 @@ chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; cha
     addMsg('Hola, soy Sofia de Zero IA.', 'them');
   }
 })();
-  /* ── NODOS VERDES DINÁMICOS ── */
+/* ── NODOS VERDES DINÁMICOS ── */
 const accent = '#c8f060';
 const white = '#fff';
-const maxGreen = 7;
+const maxGreen = 9;
+let greenQueue = [];
+let allNodes = [];
+let nodeIndex = 0;
 
-const nodeSelectors = [
-  '.node-p', '.node-s', '.node-t'
-];
-
-function getAllNodes() {
-  return [...document.querySelectorAll('.node-p, .node-s, .node-t')];
+function initNodes() {
+  allNodes = [...document.querySelectorAll('.node-p, .node-s, .node-t')];
 }
 
 function updateNodes() {
-  const nodes = getAllNodes();
-  const greenNodes = nodes.filter(n => n.getAttribute('fill') === accent);
-  
-  if (greenNodes.length >= maxGreen) {
-    const toWhite = greenNodes[Math.floor(Math.random() * greenNodes.length)];
-    toWhite.style.transition = 'fill 0.8s ease';
-    toWhite.setAttribute('fill', white);
-  } else {
-    const whiteNodes = nodes.filter(n => n.getAttribute('fill') !== accent);
-    if (whiteNodes.length > 0) {
-      const toGreen = whiteNodes[Math.floor(Math.random() * whiteNodes.length)];
-      toGreen.style.transition = 'fill 0.8s ease';
-      toGreen.setAttribute('fill', accent);
-    }
+  if (allNodes.length === 0) initNodes();
+  if (allNodes.length === 0) return;
+
+  const node = allNodes[nodeIndex % allNodes.length];
+  node.style.transition = 'fill 0.8s ease';
+  node.setAttribute('fill', accent);
+  greenQueue.push(node);
+  nodeIndex++;
+
+  if (greenQueue.length > maxGreen) {
+    const oldest = greenQueue.shift();
+    oldest.style.transition = 'fill 0.8s ease';
+    oldest.setAttribute('fill', white);
   }
 }
+
+setTimeout(() => {
+  initNodes();
+  setInterval(updateNodes, 700);
+}, 3500);
 
 setInterval(updateNodes, 600);
 </script>
