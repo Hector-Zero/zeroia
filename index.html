@@ -753,6 +753,9 @@ const ghostObs = new IntersectionObserver(entries => {
 }, { threshold: 0.3 });
 
 ghostObs.observe(ziaGhost);
+console.log('ghost:', ziaGhost);
+console.log('float:', ziaFloat);
+console.log('ghost rect:', ziaGhost ? ziaGhost.getBoundingClientRect() : 'NOT FOUND');
 
 /* ── LIVE CHAT ── */
 const WEBHOOK = 'https://hook.us2.make.com/rars6xjdd1cd86vig1h2ytg9qtetdldm';
