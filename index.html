@@ -549,10 +549,11 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
         </div>
       </div>
 <div class="how-visual fade">
-  <div id="zia-ghost"></div>
-</div>
+        <div id="zia-ghost"></div>
+      </div>
+    </div>
+  </div>
 </section>
-
 <!-- ═══ WHO — ghost logos 4 & 5 ═══ -->
 <section class="who-section">
   <!-- ghost 4: left, spokes only no secondary rings -->
@@ -756,20 +757,6 @@ ghostObs.observe(ziaGhost);
 /* ── LIVE CHAT ── */
 const WEBHOOK = 'https://hook.us2.make.com/rars6xjdd1cd86vig1h2ytg9qtetdldm';
 const SESSION_ID = 'web_' + Math.random().toString(36).slice(2, 10);
-const chatBox = document.getElementById('chat-messages');
-const chatInput = document.getElementById('chat-input');
-const chatSend = document.getElementById('chat-send');
-const phoneEl = document.querySelector('.phone');
-const phoneObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      phoneEl.classList.add('phone-pulse');
-      phoneObs.unobserve(phoneEl);
-    }
-  });
-}, { threshold: 0.5 });
-phoneObs.observe(phoneEl);
-chatInput.addEventListener('focus', () => { phoneEl.classList.remove('phone-pulse'); phoneEl.style.animation = 'none'; });
 
 function addMsg(text, from) {
   const div = document.createElement('div');
@@ -782,73 +769,7 @@ function addMsg(text, from) {
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
-
-function addTyping() {
-  const div = document.createElement('div');
-  div.className = 'msg them';
-  div.id = 'typing-indicator';
-  div.style.opacity = '1';
-  div.style.transform = 'none';
-  div.style.animation = 'none';
-  div.textContent = '...';
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function removeTyping() {
-  const t = document.getElementById('typing-indicator');
-  if (t) t.remove();
-}
-
-async function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  chatInput.value = '';
-  addMsg(text, 'me');
-  addTyping();
-  chatSend.style.pointerEvents = 'none';
-  chatInput.disabled = true;
-  try {
-    const res = await fetch(WEBHOOK, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: text, session_id: SESSION_ID})
-    });
-    const raw = await res.text();
-    removeTyping();
-    try {
-      const data = JSON.parse(raw);
-      addMsg(data.response || data.respuesta || raw, 'them');
-    } catch(e) {
-      addMsg(raw || 'Sin respuesta', 'them');
-    }
-  } catch(e) {
-    removeTyping();
-    addMsg('Sin conexion. Intenta de nuevo.', 'them');
-  }
-  chatSend.style.pointerEvents = 'auto';
-  chatInput.disabled = false;
-  chatInput.focus();
-}
-/* ── PLACEHOLDER ROTATIVO ── */
-const placeholders = [
-  'Escribe un mensaje…',
-  '¿Cómo se llama tu negocio?',
-  'Prueba hablar con Sofía…',
-  '¿Qué hace tu empresa?',
-  'Escríbele como si fueras un cliente…'
-];
-let phIndex = 0;
-setInterval(() => {
-  if (document.activeElement !== chatInput) {
-    phIndex = (phIndex + 1) % placeholders.length;
-    chatInput.placeholder = placeholders[phIndex];
-  }
-}, 2500);
-chatSend.addEventListener('click', sendMessage);
-chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
-chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; chatInput.style.height = chatInput.scrollHeight + 'px'; });
-
+  
 addMsg('Hola, bienvenido a Zero IA.\n\nSoy Sofía. Ayudamos a negocios como el tuyo a nunca perder un cliente por no responder a tiempo.\n\nPara mostrarte cómo funciona solo necesito saber: ¿cómo se llama tu negocio, cómo llamarías a tu agente, y de qué se trata lo que haces?', 'them');
 /* ── NODOS VERDES DINÁMICOS ── */
 const accent = '#c8f060';
