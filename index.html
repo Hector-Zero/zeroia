@@ -817,27 +817,7 @@ chatSend.addEventListener('click', sendMessage);
 chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
 chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; chatInput.style.height = chatInput.scrollHeight + 'px'; });
 
-(async () => {
-  addTyping();
-  try {
-    const res = await fetch(WEBHOOK, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: 'hola', session_id: SESSION_ID})
-    });
-    const raw = await res.text();
-    removeTyping();
-    try {
-      const data = JSON.parse(raw);
-      addMsg(data.response || data.respuesta || raw, 'them');
-    } catch(e) {
-      addMsg(raw || 'Hola', 'them');
-    }
-  } catch(e) {
-    removeTyping();
-    addMsg('Hola, soy Sofia de Zero IA.', 'them');
-  }
-})();
+addMsg('Hola, bienvenido a Zero IA.\n\nSoy Sofía. Ayudamos a negocios como el tuyo a nunca perder un cliente por no responder a tiempo.\n\nPara mostrarte cómo funciona solo necesito saber: ¿cómo se llama tu negocio, cómo llamarías a tu agente, y de qué se trata lo que haces?', 'them');
 /* ── NODOS VERDES DINÁMICOS ── */
 const accent = '#c8f060';
 const white = '#fff';
