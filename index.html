@@ -711,6 +711,48 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 
+/* ── FLOATING PHONE FLIP ── */
+const ziaFloat = document.getElementById('zia-float');
+const ziaLabel = document.getElementById('zia-label');
+const ziaGhost = document.getElementById('zia-ghost');
+let isExpanded = false;
+
+function flipToGhost() {
+  if (isExpanded) return;
+  isExpanded = true;
+  const ghost = ziaGhost.getBoundingClientRect();
+  const btn = ziaFloat.getBoundingClientRect();
+  const scaleX = ghost.width / btn.width;
+  const scaleY = ghost.height / btn.height;
+  const moveX = ghost.left - btn.left;
+  const moveY = ghost.top - btn.top;
+  ziaFloat.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+  ziaFloat.style.transformOrigin = '0 0';
+  ziaFloat.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scaleX}, ${scaleY})`;
+  ziaLabel.style.opacity = '0';
+}
+
+function flipToCorner() {
+  if (!isExpanded) return;
+  isExpanded = false;
+  ziaFloat.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+  ziaFloat.style.transform = 'translate(0,0) scale(1,1)';
+  ziaLabel.style.transition = 'opacity 0.4s ease 0.4s';
+  ziaLabel.style.opacity = '1';
+}
+
+const ghostObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      flipToGhost();
+    } else {
+      flipToCorner();
+    }
+  });
+}, { threshold: 0.3 });
+
+ghostObs.observe(ziaGhost);
+
 /* ── LIVE CHAT ── */
 const WEBHOOK = 'https://hook.us2.make.com/rars6xjdd1cd86vig1h2ytg9qtetdldm';
 const SESSION_ID = 'web_' + Math.random().toString(36).slice(2, 10);
