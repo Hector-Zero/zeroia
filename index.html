@@ -27,6 +27,15 @@ html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
 html{overflow-x:hidden;}
 
+#zia-ghost{
+  width:clamp(280px, 26vw, 380px);
+  height:520px;
+  border-radius:28px;
+  border:1px dashed rgba(200,240,96,0.08);
+  background:transparent;
+  pointer-events:none;
+}
+
 #zia-label{
   position:fixed;
   bottom:118px;
@@ -539,28 +548,9 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
           <div><div class="step-title">Lo conectamos a tu WhatsApp</div><div class="step-body">Desde ese momento responde solo. Cuando hay un cliente listo para comprar, te avisamos al instante. Tú solo apareces cuando importa.</div></div>
         </div>
       </div>
-      <div class="how-visual fade">
-        <div class="phone-wrap">
-          <div class="phone">
-            <div class="phone-bar">
-              <div class="p-avatar">ZI</div>
-              <div>
-                <div class="p-name">Agente Zero IA</div>
-                <div class="p-status">&#9679; en línea</div>
-              </div>
-            </div>
-            <div class="chat" id="chat-messages" style="min-height:420px;overflow-y:auto;max-height:420px;"></div>
-            <div class="chat-footer">
-              <textarea class="chat-input" id="chat-input" placeholder="Escribe un mensaje…" rows="1" style="background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--text);font-family:inherit;outline:none;"></textarea>
-              <div class="chat-send" id="chat-send" style="cursor:pointer;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="#080808"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="how-visual fade">
+  <div id="zia-ghost"></div>
+</div>
 </section>
 
 <!-- ═══ WHO — ghost logos 4 & 5 ═══ -->
