@@ -27,28 +27,34 @@ html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
 html{overflow-x:hidden;}
 
+/* GHOST PLACEHOLDER */
 #zia-ghost{
   width:clamp(280px, 26vw, 380px);
   height:520px;
   border-radius:28px;
-  border:1px dashed rgba(200,240,96,0.08);
+  border:1px dashed rgba(200,240,96,0.06);
   background:transparent;
   pointer-events:none;
 }
 
+/* FLOATING LABEL */
 #zia-label{
   position:fixed;
-  bottom:118px;
-  left:auto;
+  bottom:132px;
   right:28px;
-  transform:none;
+  width:96px;
+  text-align:center;
   font-size:.65rem;
   font-weight:400;
   letter-spacing:.08em;
   color:var(--accent);
   white-space:nowrap;
+  z-index:1000;
+  transition:opacity 0.4s ease;
+  pointer-events:none;
 }
 
+/* FLOATING BUTTON */
 #zia-float{
   position:fixed;
   bottom:28px;
@@ -58,6 +64,8 @@ html{overflow-x:hidden;}
   cursor:pointer;
   z-index:999;
   background:none;
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  transform-origin:top left;
 }
 #zia-float svg{
   width:100%;
@@ -73,6 +81,33 @@ html{overflow-x:hidden;}
   from{transform:rotate(0deg);}
   to{transform:rotate(360deg);}
 }
+
+/* EXPANDED PHONE inside float */
+#zia-chat{
+  display:none;
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:28px;
+  overflow:hidden;
+  flex-direction:column;
+  box-shadow:0 0 60px rgba(200,240,96,0.15),0 24px 60px rgba(0,0,0,0.5);
+}
+#zia-chat.visible{display:flex;}
+.zia-bar{background:#111;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.zia-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;color:#080808;flex-shrink:0;}
+.zia-name{font-size:.75rem;font-weight:400;color:var(--text);}
+.zia-status{font-size:.6rem;color:var(--accent);}
+.zia-messages{flex:1;padding:.875rem;display:flex;flex-direction:column;gap:.6rem;overflow-y:auto;}
+.zia-footer{padding:.5rem .875rem .875rem;display:flex;align-items:center;gap:.4rem;flex-shrink:0;}
+.zia-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--text);font-family:inherit;outline:none;resize:none;line-height:1.4;min-height:28px;max-height:80px;overflow-y:auto;}
+.zia-send{width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;border:none;}
+.msg{max-width:88%;width:fit-content;padding:.55rem .8rem;border-radius:14px;font-size:.72rem;line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word;box-sizing:border-box;}
+.msg.them{background:var(--bg3);color:#d4d0cc;border-bottom-left-radius:3px;align-self:flex-start;}
+.msg.me{background:#182808;border:1px solid rgba(200,240,96,.14);color:#b0d840;border-bottom-right-radius:3px;align-self:flex-end;}
+@keyframes pop{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);}
 .logo-nav{display:flex;align-items:center;gap:.875rem;text-decoration:none;}
@@ -85,34 +120,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;ali
 .btn-cta:hover{background:var(--accent2);transform:translateY(-1px);}
 
 /* SHARED */
-.container{
-  max-width:min(1280px, 90vw);
-  margin:0 auto;
-  padding:0 clamp(1rem, 3vw, 3rem);
-}
+.container{max-width:min(1280px, 90vw);margin:0 auto;padding:0 clamp(1rem, 3vw, 3rem);}
 .section-tag{font-size:.65rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;}
 .section-tag::before{content:'';display:inline-block;width:20px;height:1px;background:var(--muted2);}
 h2{font-size:clamp(1.9rem,3vw,2.8rem);font-weight:200;line-height:1.12;letter-spacing:-.02em;color:var(--text);}
 h2 em{font-style:normal;color:var(--accent);}
-
-/* GHOST LOGO utility — used throughout page */
 .gl{position:absolute;pointer-events:none;overflow:visible;}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 80px;position:relative;overflow:hidden;}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem, 5vw, 5rem);align-items:center;position:relative;z-index:2;}
+.logo-stage{width:clamp(320px, 44vw, 640px);height:clamp(320px, 44vw, 640px);position:relative;margin:0 auto;pointer-events:none;overflow:hidden;}
 
-/* animated logo stage — roughly half the viewport */
-.logo-stage{
-  width:clamp(320px, 44vw, 640px);
-  height:clamp(320px, 44vw, 640px);
-  position:relative;
-  margin:0 auto;
-  pointer-events:none;
-  overflow:hidden;
-}
-
-/* THE BUILD ANIMATION */
 @keyframes fadein{to{opacity:1;}}
 @keyframes draw-ring{to{stroke-dashoffset:0;}}
 @keyframes popin{0%{opacity:0;transform:scale(0);}60%{opacity:1;transform:scale(1.4);}100%{opacity:1;transform:scale(1);}}
@@ -120,26 +139,10 @@ h2 em{font-style:normal;color:var(--accent);}
 @keyframes pulse-ring{0%,100%{opacity:.9;}50%{opacity:.5;}}
 @keyframes spin-slow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 
-#logo-anim{
-  width:100%;height:100%;
-  pointer-events:none;
-  animation:fadeout-slow 1.5s cubic-bezier(.4,0,.6,1) 6s forwards, spin-slow 20s linear 0s infinite;
-}
-.logo-glow{
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 50%,rgba(200,240,96,.01) 0%,transparent 65%);
-  pointer-events:none;opacity:0;
-  animation:fadein 1s ease 2s forwards, fadeout-slow 0.5s ease 6s forwards;
-}
-
-/* center dot */
+#logo-anim{width:100%;height:100%;pointer-events:none;animation:fadeout-slow 1.5s cubic-bezier(.4,0,.6,1) 6s forwards, spin-slow 20s linear 0s infinite;}
+.logo-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(200,240,96,.01) 0%,transparent 65%);pointer-events:none;opacity:0;animation:fadein 1s ease 2s forwards, fadeout-slow 0.5s ease 6s forwards;}
 .c-center{opacity:0;animation:popin .3s ease .1s forwards;transform-origin:160px 138px;}
-/* outer ring */
-.r-outer{
-  stroke-dasharray:251.3;stroke-dashoffset:251.3;
-  animation:draw-ring 1s ease .2s forwards, pulse-ring 4s ease 3s infinite;
-}
-/* primary nodes + spokes */
+.r-outer{stroke-dasharray:251.3;stroke-dashoffset:251.3;animation:draw-ring 1s ease .2s forwards, pulse-ring 4s ease 3s infinite;}
 .node-p{opacity:0;}.spoke{opacity:0;}
 .node-p.n0,.spoke.s0{animation:fadein .3s ease 1.5s forwards;}
 .node-p.n1,.spoke.s1{animation:fadein .3s ease 1.7s forwards;}
@@ -147,7 +150,6 @@ h2 em{font-style:normal;color:var(--accent);}
 .node-p.n3,.spoke.s3{animation:fadein .3s ease 2.1s forwards;}
 .node-p.n4,.spoke.s4{animation:fadein .3s ease 2.3s forwards;}
 .node-p.n5,.spoke.s5{animation:fadein .3s ease 2.5s forwards;}
-/* secondary rings */
 .ring-s{stroke-dasharray:125.7;stroke-dashoffset:125.7;}
 .ring-s1{animation:draw-ring .7s ease 1.6s forwards;}
 .ring-s2{animation:draw-ring .7s ease 1.8s forwards;}
@@ -155,7 +157,6 @@ h2 em{font-style:normal;color:var(--accent);}
 .ring-s4{animation:draw-ring .7s ease 2.2s forwards;}
 .ring-s5{animation:draw-ring .7s ease 2.4s forwards;}
 .ring-s6{animation:draw-ring .7s ease 2.6s forwards;}
-/* secondary nodes */
 .node-s{opacity:0;}.spoke-s{opacity:0;}
 .ns-g0 .node-s,.ss-g0 .spoke-s{animation:fadein .25s ease 2.0s forwards;}
 .ns-g1 .node-s,.ss-g1 .spoke-s{animation:fadein .25s ease 2.2s forwards;}
@@ -163,7 +164,6 @@ h2 em{font-style:normal;color:var(--accent);}
 .ns-g3 .node-s,.ss-g3 .spoke-s{animation:fadein .25s ease 2.6s forwards;}
 .ns-g4 .node-s,.ss-g4 .spoke-s{animation:fadein .25s ease 2.8s forwards;}
 .ns-g5 .node-s,.ss-g5 .spoke-s{animation:fadein .25s ease 3.0s forwards;}
-/* tertiary rings */
 .ring-t{stroke-dasharray:56.5;stroke-dashoffset:56.5;}
 .ring-t1{animation:draw-ring .5s ease 2.8s forwards;}
 .ring-t2{animation:draw-ring .5s ease 2.9s forwards;}
@@ -171,7 +171,6 @@ h2 em{font-style:normal;color:var(--accent);}
 .ring-t4{animation:draw-ring .5s ease 3.1s forwards;}
 .ring-t5{animation:draw-ring .5s ease 3.2s forwards;}
 .ring-t6{animation:draw-ring .5s ease 3.3s forwards;}
-/* tertiary nodes */
 .node-t{opacity:0;}
 .nt-g0 .node-t{animation:fadein .3s ease 3.0s forwards;}
 .nt-g1 .node-t{animation:fadein .3s ease 3.1s forwards;}
@@ -179,9 +178,7 @@ h2 em{font-style:normal;color:var(--accent);}
 .nt-g3 .node-t{animation:fadein .3s ease 3.3s forwards;}
 .nt-g4 .node-t{animation:fadein .3s ease 3.4s forwards;}
 .nt-g5 .node-t{animation:fadein .3s ease 3.5s forwards;}
-/* green accent dot */
 .c-accent{opacity:0;animation:fadein .4s ease 3.4s forwards;}
-/* hero text stagger */
 .hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;animation:fadein .6s ease 3.8s forwards;}
 .hero-eyebrow span{width:5px;height:5px;background:var(--accent);border-radius:50%;display:inline-block;animation:blink 2.4s ease-in-out 4s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
@@ -192,31 +189,10 @@ h1{font-size:clamp(2.4rem,4.5vw,4rem);font-weight:200;line-height:1.06;letter-sp
 h1 em{font-style:normal;color:var(--accent);}
 .hero-body{font-size:.95rem;color:var(--muted);line-height:1.8;max-width:420px;margin-bottom:2.5rem;opacity:0;animation:fadein .7s ease 4.2s forwards;}
 .btn-group{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;opacity:0;animation:fadein .7s ease 4.4s forwards;}
-
-/* BUTTONS */
 .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#080808;font-size:.82rem;font-weight:500;padding:.8rem 1.6rem;border-radius:2px;text-decoration:none;transition:background .2s,transform .15s;}
 .btn-primary:hover{background:var(--accent2);transform:translateY(-2px);}
 .btn-ghost{font-size:.78rem;font-weight:300;color:var(--muted);text-decoration:none;letter-spacing:.04em;border-bottom:1px solid var(--border2);padding-bottom:1px;transition:color .2s,border-color .2s;}
 .btn-ghost:hover{color:var(--text);border-color:var(--muted2);}
-
-/* PHONE */
-.phone-wrap{position:relative;}
-.phone{width:clamp(280px, 26vw, 380px);max-width:100%;margin:0 auto;background:var(--bg2);border:1px solid var(--border2);border-radius:28px;overflow:hidden;position:relative;z-index:2;box-shadow:0 0 60px rgba(200,240,96,0.07),0 24px 60px rgba(0,0,0,0.5);}
-@keyframes phone-pulse{0%,100%{box-shadow:0 0 60px rgba(200,240,96,0.15),0 24px 60px rgba(0,0,0,0.5);}50%{box-shadow:0 0 80px rgba(200,240,96,0.15),0 24px 60px rgba(0,0,0,0.5);}}
-.phone-pulse{animation:phone-pulse 1.2s ease-in-out 9;}
-.phone-bar{background:#111;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border);}
-.p-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;color:#080808;flex-shrink:0;}
-.p-name{font-size:.75rem;font-weight:400;color:var(--text);}
-.p-status{font-size:.6rem;color:var(--accent);}
-.chat{padding:.875rem;display:flex;flex-direction:column;gap:.6rem;}
-.msg{max-width:88%;width:fit-content;padding:.55rem .8rem;border-radius:14px;font-size:.72rem;line-height:1.55;opacity:0;transform:translateY(6px);animation:pop .25s ease forwards;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word;box-sizing:border-box;}
-.msg.them{background:var(--bg3);color:#d4d0cc;border-bottom-left-radius:3px;align-self:flex-start;}
-.msg.me{background:#182808;border:1px solid rgba(200,240,96,.14);color:#b0d840;border-bottom-right-radius:3px;align-self:flex-end;}
-.msg:nth-child(1){animation-delay:.4s;}.msg:nth-child(2){animation-delay:1.1s;}.msg:nth-child(3){animation-delay:1.8s;}.msg:nth-child(4){animation-delay:2.5s;}.msg:nth-child(5){animation-delay:3.2s;}
-@keyframes pop{to{opacity:1;transform:translateY(0);}}
-.chat-footer{padding:.5rem .875rem .875rem;display:flex;align-items:center;gap:.4rem;}
-.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:.4rem .75rem;font-size:.65rem;color:var(--muted);font-family:inherit;resize:none;overflow:hidden;line-height:1.4;min-height:28px;max-height:120px;overflow-y:auto;}
-.chat-send{width:28px;height:28px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
 /* TICKER */
 .ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:.9rem 0;background:var(--bg2);}
@@ -297,7 +273,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
 .footer-links a{font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:color .2s;}
 .footer-links a:hover{color:var(--text);}
 
-/* SCROLL FADE — no overflow:hidden on parents so observer fires correctly */
+/* SCROLL FADE */
 .fade{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;}
 .fade.on{opacity:1;transform:translateY(0);}
 .fade.d1{transition-delay:.1s;}.fade.d2{transition-delay:.2s;}.fade.d3{transition-delay:.3s;}
@@ -314,6 +290,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   nav{padding:0 1.25rem;}
   .nav-links a:not(.btn-cta){display:none;}
   footer{flex-direction:column;gap:1rem;text-align:center;}
+}
 @media(min-width:1400px){
   .hero-grid{grid-template-columns:1.1fr 0.9fr;}
   .niches{grid-template-columns:repeat(4,1fr);}
@@ -323,10 +300,10 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
 </head>
 <body>
 
-<!-- ═══ NAV ═══ -->
+<!-- NAV -->
 <nav>
   <a href="#" class="logo-nav">
-    <svg viewBox="60 38 200 200" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
       <circle cx="160" cy="138" r="4" fill="#c8f060"/>
       <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="1" opacity="0.9"/>
       <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
@@ -345,12 +322,10 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
+<!-- HERO -->
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
-
-      <!-- text left -->
       <div>
         <div class="hero-eyebrow"><span></span>Agentes de IA · Santiago, Chile</div>
         <h1>Nunca pierdas<br>un cliente por<br><em>no responder</em><br>a tiempo</h1>
@@ -360,58 +335,52 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             2 semanas gratis
           </a>
-    <a href="#proceso" class="btn-ghost">Ver cómo funciona →</a>
+          <a href="#proceso" class="btn-ghost">Ver cómo funciona →</a>
         </div>
         <div class="hero-arrow"><a href="#proceso">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </a></div>
       </div>
-      <!-- animated logo right — bigger, slower fade -->
       <div class="logo-stage">
         <div class="logo-glow"></div>
         <svg id="logo-anim" viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg">
-
           <circle class="c-center" cx="160" cy="138" r="4" fill="#fff" style="transform-origin:160px 138px;"/>
           <circle class="r-outer" cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.9"/>
           <circle class="c-accent" cx="160" cy="138" r="4" fill="#c8f060"/>
-
           <line class="spoke s0" x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
           <line class="spoke s1" x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
           <line class="spoke s2" x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
           <line class="spoke s3" x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
           <line class="spoke s4" x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
           <line class="spoke s5" x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.4" opacity="0.4"/>
-
-          <circle class="node-p n0" cx="160" cy="98"   r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n0" cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/>
           <circle class="node-p n1" cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/>
           <circle class="node-p n2" cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/>
-          <circle class="node-p n3" cx="160" cy="178"  r="3" fill="#fff" opacity="0.9"/>
+          <circle class="node-p n3" cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/>
           <circle class="node-p n4" cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/>
           <circle class="node-p n5" cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
-
           <circle class="ring-s ring-s1" cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
           <circle class="ring-s ring-s2" cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
           <circle class="ring-s ring-s3" cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
           <circle class="ring-s ring-s4" cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
           <circle class="ring-s ring-s5" cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
           <circle class="ring-s ring-s6" cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.65"/>
-
           <g class="ns-g0 ss-g0">
-            <line class="spoke-s" x1="160" y1="98" x2="160" y2="80"  stroke="#fff" stroke-width="0.3" opacity="0.3"/>
-            <line class="spoke-s" x1="160" y1="98" x2="178" y2="98"  stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="98" x2="160" y2="80" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <line class="spoke-s" x1="160" y1="98" x2="178" y2="98" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
             <line class="spoke-s" x1="160" y1="98" x2="160" y2="116" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
-            <line class="spoke-s" x1="160" y1="98" x2="142" y2="98"  stroke="#fff" stroke-width="0.3" opacity="0.3"/>
-            <circle class="node-s" cx="160" cy="78"  r="2" fill="#fff" opacity="0.65"/>
-            <circle class="node-s" cx="180" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <line class="spoke-s" x1="160" y1="98" x2="142" y2="98" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
+            <circle class="node-s" cx="160" cy="78" r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="180" cy="98" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="160" cy="118" r="2" fill="#fff" opacity="0.65"/>
-            <circle class="node-s" cx="140" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="140" cy="98" r="2" fill="#fff" opacity="0.65"/>
           </g>
           <g class="ns-g1 ss-g1">
             <line class="spoke-s" x1="194.6" y1="118" x2="194.6" y2="100" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
             <line class="spoke-s" x1="194.6" y1="118" x2="212.6" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
             <line class="spoke-s" x1="194.6" y1="118" x2="194.6" y2="136" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
             <line class="spoke-s" x1="194.6" y1="118" x2="176.6" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
-            <circle class="node-s" cx="194.6" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="194.6" cy="98" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="214.6" cy="118" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="194.6" cy="138" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="174.6" cy="118" r="2" fill="#fff" opacity="0.65"/>
@@ -451,33 +420,30 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
             <line class="spoke-s" x1="125.4" y1="118" x2="143.4" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
             <line class="spoke-s" x1="125.4" y1="118" x2="125.4" y2="136" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
             <line class="spoke-s" x1="125.4" y1="118" x2="107.4" y2="118" stroke="#fff" stroke-width="0.3" opacity="0.3"/>
-            <circle class="node-s" cx="125.4" cy="98"  r="2" fill="#fff" opacity="0.65"/>
+            <circle class="node-s" cx="125.4" cy="98" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="145.4" cy="118" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="125.4" cy="138" r="2" fill="#fff" opacity="0.65"/>
             <circle class="node-s" cx="105.4" cy="118" r="2" fill="#fff" opacity="0.65"/>
           </g>
-
-          <circle class="ring-t ring-t1" cx="160"   cy="78"  r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t1" cx="160" cy="78" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
           <circle class="ring-t ring-t2" cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
           <circle class="ring-t ring-t3" cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
-          <circle class="ring-t ring-t4" cx="160"   cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
+          <circle class="ring-t ring-t4" cx="160" cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
           <circle class="ring-t ring-t5" cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
           <circle class="ring-t ring-t6" cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.4" opacity="0.35"/>
-
-          <g class="nt-g0"><circle class="node-t" cx="160" cy="69"  r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="169" cy="78"  r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="151" cy="78"  r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="160" cy="87"  r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g0"><circle class="node-t" cx="160" cy="69" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="169" cy="78" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="151" cy="78" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="160" cy="87" r="1.2" fill="#fff" opacity="0.35"/></g>
           <g class="nt-g1"><circle class="node-t" cx="214.6" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="223.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="205.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="214.6" cy="127" r="1.2" fill="#fff" opacity="0.35"/></g>
           <g class="nt-g2"><circle class="node-t" cx="214.6" cy="149" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="223.6" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="205.6" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="214.6" cy="167" r="1.2" fill="#fff" opacity="0.35"/></g>
           <g class="nt-g3"><circle class="node-t" cx="160" cy="189" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="169" cy="198" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="151" cy="198" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="160" cy="207" r="1.2" fill="#fff" opacity="0.35"/></g>
-          <g class="nt-g4"><circle class="node-t" cx="105.4" cy="149" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="114.4" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="96.4"  cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="105.4" cy="167" r="1.2" fill="#fff" opacity="0.35"/></g>
-          <g class="nt-g5"><circle class="node-t" cx="105.4" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="114.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="96.4"  cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="105.4" cy="127" r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g4"><circle class="node-t" cx="105.4" cy="149" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="114.4" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="96.4" cy="158" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="105.4" cy="167" r="1.2" fill="#fff" opacity="0.35"/></g>
+          <g class="nt-g5"><circle class="node-t" cx="105.4" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="114.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="96.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle class="node-t" cx="105.4" cy="127" r="1.2" fill="#fff" opacity="0.35"/></g>
         </svg>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ═══ TICKER ═══ -->
+<!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-item"><span class="ticker-dot"></span>Respuesta en menos de 5 segundos</span>
@@ -499,7 +465,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </div>
 
-<!-- ═══ STATS — ghost logo 1: dot only ═══ -->
+<!-- STATS -->
 <section class="stats-section">
   <svg class="gl" style="right:-80px;top:50%;transform:translateY(-50%);width:260px;height:260px;opacity:0.05;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
@@ -514,7 +480,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </section>
 
-<!-- ═══ HOW IT WORKS — ghost logo 2: dot + ring + spokes ═══ -->
+<!-- HOW IT WORKS -->
 <section class="how-section" id="proceso">
   <svg class="gl" style="left:-100px;top:40%;transform:translateY(-50%);width:300px;height:300px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
@@ -522,7 +488,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
     <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
   </svg>
-  <!-- ghost logo 3: dot + ring + secondary rings (no nodes) top-right -->
   <svg class="gl" style="right:-60px;bottom:0;width:240px;height:240px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
     <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
@@ -548,22 +513,21 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
           <div><div class="step-title">Lo conectamos a tu WhatsApp</div><div class="step-body">Desde ese momento responde solo. Cuando hay un cliente listo para comprar, te avisamos al instante. Tú solo apareces cuando importa.</div></div>
         </div>
       </div>
-<div class="how-visual fade">
+      <div class="how-visual fade">
         <div id="zia-ghost"></div>
       </div>
     </div>
   </div>
 </section>
-<!-- ═══ WHO — ghost logos 4 & 5 ═══ -->
+
+<!-- WHO -->
 <section class="who-section">
-  <!-- ghost 4: left, spokes only no secondary rings -->
   <svg class="gl" style="left:-70px;top:20%;width:280px;height:280px;opacity:0.05;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
     <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.9"/>
     <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
     <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
   </svg>
-  <!-- ghost 5: right bottom, secondary rings + secondary nodes -->
   <svg class="gl" style="right:-90px;bottom:-40px;width:360px;height:360px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
     <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8"/>
@@ -586,9 +550,8 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </section>
 
-<!-- ═══ PRICING — ghost logos 6 & 7 ═══ -->
+<!-- PRICING -->
 <section class="pricing-section" id="precios">
-  <!-- ghost 6: full logo left side, large, very faint -->
   <svg class="gl" style="left:-120px;top:50%;transform:translateY(-50%);width:420px;height:420px;opacity:0.035;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
     <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.8"/>
@@ -605,7 +568,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     </div>
     <div class="pricing-inner">
       <div class="pricing-card fade">
-        <!-- ghost 7: inside card watermark -->
         <svg class="pricing-wm" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
           <circle cx="160" cy="138" r="4" fill="#c8f060"/>
           <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="1"/>
@@ -623,7 +585,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
             <li><span class="feat-dot"></span>Agente personalizado para tu negocio</li>
             <li><span class="feat-dot"></span>Conectado a tu WhatsApp</li>
             <li><span class="feat-dot"></span>Alertas de leads listos para comprar</li>
-            <li><span class="feat-dot"></span>Agenda citas automáticamente</li>
+            <li><span class="feat-dot"></span>Agenda citas automáticamente</span></li>
             <li><span class="feat-dot"></span>Ajustes y mejoras incluidos</li>
             <li><span class="feat-dot"></span>Soporte directo por WhatsApp</li>
           </ul>
@@ -634,7 +596,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </section>
 
-<!-- ═══ FAQ — ghost logo 8 ═══ -->
+<!-- FAQ -->
 <section class="faq-section">
   <svg class="gl" style="right:-60px;top:50%;transform:translateY(-50%);width:340px;height:340px;opacity:0.04;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
@@ -642,8 +604,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
     <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.4"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
     <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/>
-    <circle cx="160" cy="78" r="2" fill="#fff" opacity="0.6"/><circle cx="180" cy="98" r="2" fill="#fff" opacity="0.6"/><circle cx="140" cy="98" r="2" fill="#fff" opacity="0.6"/><circle cx="214.6" cy="118" r="2" fill="#fff" opacity="0.6"/><circle cx="174.6" cy="118" r="2" fill="#fff" opacity="0.6"/><circle cx="214.6" cy="158" r="2" fill="#fff" opacity="0.6"/><circle cx="174.6" cy="158" r="2" fill="#fff" opacity="0.6"/><circle cx="160" cy="198" r="2" fill="#fff" opacity="0.6"/><circle cx="140" cy="178" r="2" fill="#fff" opacity="0.6"/><circle cx="105.4" cy="158" r="2" fill="#fff" opacity="0.6"/><circle cx="105.4" cy="118" r="2" fill="#fff" opacity="0.6"/>
-    <circle cx="160" cy="78" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="160" cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/><circle cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.35"/>
   </svg>
   <div class="container" style="text-align:center;">
     <div class="fade">
@@ -660,7 +620,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </section>
 
-<!-- ═══ CTA — ghost logo 9 (centered, largest, most complete) ═══ -->
+<!-- CTA -->
 <section class="cta-section">
   <svg class="gl" style="top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;opacity:0.06;" viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
     <circle cx="160" cy="138" r="4" fill="#c8f060"/>
@@ -668,11 +628,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <circle cx="160" cy="98" r="3" fill="#fff"/><circle cx="194.6" cy="118" r="3" fill="#fff"/><circle cx="194.6" cy="158" r="3" fill="#fff"/><circle cx="160" cy="178" r="3" fill="#fff"/><circle cx="125.4" cy="158" r="3" fill="#fff"/><circle cx="125.4" cy="118" r="3" fill="#fff"/>
     <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5"/>
     <circle cx="160" cy="98" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="194.6" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="160" cy="178" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="158" r="20" fill="none" stroke="#fff" stroke-width="0.6"/><circle cx="125.4" cy="118" r="20" fill="none" stroke="#fff" stroke-width="0.6"/>
-    <circle cx="160" cy="78" r="2" fill="#fff"/><circle cx="180" cy="98" r="2" fill="#fff"/><circle cx="140" cy="98" r="2" fill="#fff"/><circle cx="214.6" cy="118" r="2" fill="#fff"/><circle cx="174.6" cy="118" r="2" fill="#fff"/><circle cx="214.6" cy="158" r="2" fill="#fff"/><circle cx="174.6" cy="158" r="2" fill="#fff"/><circle cx="160" cy="198" r="2" fill="#fff"/><circle cx="140" cy="178" r="2" fill="#fff"/><circle cx="105.4" cy="158" r="2" fill="#fff"/><circle cx="105.4" cy="118" r="2" fill="#fff"/>
-    <circle cx="160" cy="78" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="214.6" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="214.6" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="160" cy="198" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="105.4" cy="158" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="105.4" cy="118" r="9" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
-    <circle cx="160" cy="69" r="1.2" fill="#fff" opacity="0.35"/><circle cx="169" cy="78" r="1.2" fill="#fff" opacity="0.35"/><circle cx="151" cy="78" r="1.2" fill="#fff" opacity="0.35"/><circle cx="160" cy="87" r="1.2" fill="#fff" opacity="0.35"/>
-    <circle cx="214.6" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle cx="223.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="205.6" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="214.6" cy="127" r="1.2" fill="#fff" opacity="0.35"/>
-    <circle cx="105.4" cy="109" r="1.2" fill="#fff" opacity="0.35"/><circle cx="114.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="96.4" cy="118" r="1.2" fill="#fff" opacity="0.35"/><circle cx="105.4" cy="127" r="1.2" fill="#fff" opacity="0.35"/>
   </svg>
   <div class="container" style="position:relative;z-index:2;">
     <div class="fade">
@@ -686,7 +641,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-brand">
     <svg viewBox="60 60 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -701,12 +656,41 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   <div class="footer-links">
     <a href="#">Instagram</a>
     <a href="#">LinkedIn</a>
-    <a href="/cdn-cgi/l/email-protection#462e292a27063c233429682f27"><span class="__cf_email__" data-cfemail="335b5c5f52734956415c1d5a52">[email&#160;protected]</span></a>
+    <a href="mailto:hola@zeroia.cl">hola@zeroia.cl</a>
   </div>
 </footer>
 
+<!-- FLOATING ZERO IA BUTTON -->
+<div id="zia-float">
+  <svg viewBox="60 38 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
+    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.7"/>
+    <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
+    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.35"/>
+    <circle cx="160" cy="98" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="194.6" cy="118" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="194.6" cy="158" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="160" cy="178" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="125.4" cy="158" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="125.4" cy="118" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+  <!-- EXPANDED CHAT PANEL — hidden by default, shown when expanded -->
+  <div id="zia-chat">
+    <div class="zia-bar">
+      <div class="zia-avatar">ZI</div>
+      <div>
+        <div class="zia-name">Sofía — Zero IA</div>
+        <div class="zia-status">&#9679; en línea</div>
+      </div>
+    </div>
+    <div class="zia-messages" id="zia-messages"></div>
+    <div class="zia-footer">
+      <textarea class="zia-input" id="zia-input" placeholder="Escribe un mensaje…" rows="1"></textarea>
+      <button class="zia-send" id="zia-send">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#080808"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="zia-label">Habla conmigo...</div>
+
 <script>
-/* Scroll fade — root:null observes against viewport, no overflow:hidden interference */
+/* ── SCROLL FADE ── */
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
 }, { threshold: 0.12 });
@@ -716,106 +700,169 @@ document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 const ziaFloat = document.getElementById('zia-float');
 const ziaLabel = document.getElementById('zia-label');
 const ziaGhost = document.getElementById('zia-ghost');
+const ziaChat  = document.getElementById('zia-chat');
+const ziaMsgs  = document.getElementById('zia-messages');
+const ziaInput = document.getElementById('zia-input');
+const ziaSend  = document.getElementById('zia-send');
+
+const WEBHOOK    = 'https://hook.us2.make.com/rars6xjdd1cd86vig1h2ytg9qtetdldm';
+const SESSION_ID = 'web_' + Math.random().toString(36).slice(2, 10);
+
 let isExpanded = false;
 
-function flipToGhost() {
+function addMsg(text, from) {
+  if (!ziaMsgs) return;
+  const div = document.createElement('div');
+  div.className = 'msg ' + (from === 'me' ? 'me' : 'them');
+  div.style.animation = 'pop 0.25s ease forwards';
+  div.style.whiteSpace = 'pre-wrap';
+  div.textContent = text;
+  ziaMsgs.appendChild(div);
+  ziaMsgs.scrollTop = ziaMsgs.scrollHeight;
+}
+
+function addTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg them';
+  div.id = 'zia-typing';
+  div.textContent = '...';
+  ziaMsgs.appendChild(div);
+  ziaMsgs.scrollTop = ziaMsgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('zia-typing');
+  if (t) t.remove();
+}
+
+function expandToGhost() {
   if (isExpanded) return;
   isExpanded = true;
+
   const ghost = ziaGhost.getBoundingClientRect();
-  const btn = ziaFloat.getBoundingClientRect();
-  const scaleX = ghost.width / btn.width;
+  const btn   = ziaFloat.getBoundingClientRect();
+  const scaleX = ghost.width  / btn.width;
   const scaleY = ghost.height / btn.height;
-  const moveX = ghost.left - btn.left;
-  const moveY = ghost.top - btn.top;
-  ziaFloat.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+  const moveX  = ghost.left   - btn.left;
+  const moveY  = ghost.top    - btn.top;
+
+  /* pause spin during transition */
+  ziaFloat.querySelector('svg').style.animationPlayState = 'paused';
+  ziaFloat.querySelector('svg').style.opacity = '0';
+
   ziaFloat.style.transformOrigin = '0 0';
-  ziaFloat.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scaleX}, ${scaleY})`;
+  ziaFloat.style.transform = `translate(${moveX}px,${moveY}px) scale(${scaleX},${scaleY})`;
+
   ziaLabel.style.opacity = '0';
+  ziaLabel.style.pointerEvents = 'none';
+
+  /* show chat panel after transform settles */
+  setTimeout(() => {
+    ziaChat.classList.add('visible');
+    if (ziaMsgs.children.length === 0) {
+      addMsg('Hola, bienvenido a Zero IA.\n\nSoy Sofía. Ayudamos a negocios como el tuyo a nunca perder un cliente por no responder a tiempo.\n\nPara mostrarte cómo funciona solo necesito saber: ¿cómo se llama tu negocio, cómo llamarías a tu agente, y de qué se trata lo que haces?', 'them');
+    }
+    ziaInput.focus();
+  }, 400);
 }
 
-function flipToCorner() {
+function collapseToCorner() {
   if (!isExpanded) return;
   isExpanded = false;
-  ziaFloat.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)';
+
+  ziaChat.classList.remove('visible');
+  ziaFloat.querySelector('svg').style.opacity = '1';
+  ziaFloat.querySelector('svg').style.animationPlayState = 'running';
+
   ziaFloat.style.transform = 'translate(0,0) scale(1,1)';
-  ziaLabel.style.transition = 'opacity 0.4s ease 0.4s';
-  ziaLabel.style.opacity = '1';
+
+  setTimeout(() => {
+    ziaLabel.style.opacity = '1';
+    ziaLabel.style.pointerEvents = 'auto';
+  }, 500);
 }
 
+/* Intersection observer — ghost entering/leaving viewport */
 const ghostObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      flipToGhost();
+      expandToGhost();
     } else {
-      flipToCorner();
+      collapseToCorner();
     }
   });
-}, { threshold: 0.3 });
+}, { threshold: 0.2 });
 
 ghostObs.observe(ziaGhost);
-console.log('ghost:', ziaGhost);
-console.log('float:', ziaFloat);
-console.log('ghost rect:', ziaGhost ? ziaGhost.getBoundingClientRect() : 'NOT FOUND');
 
-/* ── LIVE CHAT ── */
-const WEBHOOK = 'https://hook.us2.make.com/rars6xjdd1cd86vig1h2ytg9qtetdldm';
-const SESSION_ID = 'web_' + Math.random().toString(36).slice(2, 10);
-
-function addMsg(text, from) {
-  const div = document.createElement('div');
-  div.className = 'msg ' + (from === 'me' ? 'me' : 'them');
-  div.style.opacity = '1';
-  div.style.transform = 'none';
-  div.style.animation = 'none';
-  div.style.whiteSpace = 'pre-wrap';
-  div.textContent = text;
+/* Send message */
+async function sendMessage() {
+  const text = ziaInput.value.trim();
+  if (!text) return;
+  ziaInput.value = '';
+  ziaInput.style.height = 'auto';
+  addMsg(text, 'me');
+  addTyping();
+  ziaSend.disabled = true;
+  ziaInput.disabled = true;
+  try {
+    const res  = await fetch(WEBHOOK, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: text, session_id: SESSION_ID})
+    });
+    const raw  = await res.text();
+    removeTyping();
+    try {
+      const data = JSON.parse(raw);
+      addMsg(data.response || data.respuesta || raw, 'them');
+    } catch(e) {
+      addMsg(raw || 'Sin respuesta', 'them');
+    }
+  } catch(e) {
+    removeTyping();
+    addMsg('Sin conexión. Intenta de nuevo.', 'them');
+  }
+  ziaSend.disabled = false;
+  ziaInput.disabled = false;
+  ziaInput.focus();
 }
-  
-addMsg('Hola, bienvenido a Zero IA.\n\nSoy Sofía. Ayudamos a negocios como el tuyo a nunca perder un cliente por no responder a tiempo.\n\nPara mostrarte cómo funciona solo necesito saber: ¿cómo se llama tu negocio, cómo llamarías a tu agente, y de qué se trata lo que haces?', 'them');
-/* ── NODOS VERDES DINÁMICOS ── */
+
+ziaSend.addEventListener('click', sendMessage);
+ziaInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+ziaInput.addEventListener('input', () => {
+  ziaInput.style.height = 'auto';
+  ziaInput.style.height = ziaInput.scrollHeight + 'px';
+});
+
+/* ── DYNAMIC GREEN NODES ── */
 const accent = '#c8f060';
-const white = '#fff';
+const white  = '#fff';
 const maxGreen = 9;
 let greenQueue = [];
-let allNodes = [];
-let nodeIndex = 0;
+let allNodes   = [];
+let nodeIndex  = 0;
 
 function initNodes() {
   allNodes = [...document.querySelectorAll('.node-p, .node-s, .node-t')];
 }
-
 function updateNodes() {
   if (allNodes.length === 0) initNodes();
   if (allNodes.length === 0) return;
-
   const node = allNodes[nodeIndex % allNodes.length];
   node.style.transition = 'fill 0.8s ease';
   node.setAttribute('fill', accent);
   greenQueue.push(node);
   nodeIndex++;
-
   if (greenQueue.length > maxGreen) {
     const oldest = greenQueue.shift();
     oldest.style.transition = 'fill 0.8s ease';
     oldest.setAttribute('fill', white);
   }
 }
-
-setTimeout(() => {
-  initNodes();
-  setInterval(updateNodes, 700);
-}, 3500);
+setTimeout(() => { initNodes(); setInterval(updateNodes, 700); }, 3500);
 </script>
-  <!-- FLOATING ZERO IA BUTTON -->
-<div id="zia-float">
-  <svg viewBox="60 55 200 210" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="160" cy="138" r="4" fill="#c8f060"/>
-    <circle cx="160" cy="138" r="40" fill="none" stroke="#fff" stroke-width="0.7" opacity="0.7"/>
-    <circle cx="160" cy="98" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="118" r="3" fill="#fff" opacity="0.9"/><circle cx="194.6" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="160" cy="178" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="158" r="3" fill="#fff" opacity="0.9"/><circle cx="125.4" cy="118" r="3" fill="#fff" opacity="0.9"/>
-    <line x1="160" y1="138" x2="160" y2="101" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="192" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="192" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="160" y2="175" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="128" y2="156" stroke="#fff" stroke-width="0.5" opacity="0.35"/><line x1="160" y1="138" x2="128" y2="120" stroke="#fff" stroke-width="0.5" opacity="0.35"/>
-    <circle cx="160" cy="98" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="194.6" cy="118" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="194.6" cy="158" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="160" cy="178" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="125.4" cy="158" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/><circle cx="125.4" cy="118" r="14" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.4"/>
-  </svg>
-  <span id="zia-label">Habla conmigo...</span>
-</div>
 </body>
 </html>
