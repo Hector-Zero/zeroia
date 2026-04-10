@@ -749,7 +749,7 @@ async function sendMessage() {
     removeTyping();
     try {
       const data = JSON.parse(raw);
-      addMsg(data.respuesta || raw, 'them');
+      addMsg(data.response || data.respuesta || raw, 'them');
     } catch(e) {
       addMsg(raw || 'Sin respuesta', 'them');
     }
@@ -792,7 +792,7 @@ chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; cha
     removeTyping();
     try {
       const data = JSON.parse(raw);
-      addMsg(data.respuesta || raw, 'them');
+      addMsg(data.response || data.respuesta || raw, 'them');
     } catch(e) {
       addMsg(raw || 'Hola', 'them');
     }
