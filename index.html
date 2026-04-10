@@ -27,6 +27,19 @@ html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
 html{overflow-x:hidden;}
 
+#zia-label{
+  position:fixed;
+  bottom:8px;
+  left:auto;
+  right:28px;
+  transform:none;
+  font-size:.65rem;
+  font-weight:400;
+  letter-spacing:.08em;
+  color:var(--accent);
+  white-space:nowrap;
+}
+
 #zia-float{
   position:fixed;
   bottom:28px;
@@ -42,6 +55,7 @@ html{overflow-x:hidden;}
   height:100%;
   transform-origin:50% 50%;
   animation:zia-spin 12s linear infinite reverse, zia-glow 2s ease-in-out infinite;
+  <span id="zia-label">Hola</span>
 }
 @keyframes zia-glow{
   0%,100%{filter:drop-shadow(0 0 6px rgba(200,240,96,0.4));}
