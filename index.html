@@ -277,6 +277,12 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
 </head>
 <body>
 
+<div id="prefilled-greeting" style="display:none">Hola, bienvenido a Zero Company.
+
+Soy Sofía. Ayudamos a negocios como el tuyo a nunca perder un cliente por no responder a tiempo, con un agente de inteligencia artificial hecho específicamente para ti.
+
+Puedo mostrarte cómo funciona en segundos, solo necesito saber: ¿cómo se llama tu negocio, cómo llamarías a tu agente, y de qué se trata lo que haces?</div>
+
 <!-- ═══ NAV ═══ -->
 <nav>
   <a href="#" class="logo-nav">
@@ -743,7 +749,7 @@ async function sendMessage() {
     const res = await fetch(WEBHOOK, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: text, session_id: SESSION_ID})
+      body: JSON.stringify({message: text, session_id: SESSION_ID, prefilled_history: greeting})
     });
     const raw = await res.text();
     removeTyping();
@@ -780,7 +786,9 @@ chatSend.addEventListener('click', sendMessage);
 chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
 chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; chatInput.style.height = chatInput.scrollHeight + 'px'; });
 
-addMsg('Hola, bienvenido a Zero IA.\n\nSoy Sofía. Ayudamos a negocios como el tuyo a nunca perder un cliente por no responder a tiempo.\n\nPara mostrarte cómo funciona solo necesito saber: ¿cómo se llama tu negocio, cómo llamarías a tu agente, y de qué se trata lo que haces?', 'them');
+const greeting = document.getElementById('prefilled-greeting').textContent;
+addMsg(greeting, 'them');
+  
 /* ── NODOS VERDES DINÁMICOS ── */
 const accent = '#c8f060';
 const white = '#fff';
