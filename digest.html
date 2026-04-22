@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="description" content="Zero Magacin — Tu resumen diario personalizado por IA. Elige tus temas, diseño e idioma. Llega cada mañana a tu correo.">
 <meta property="og:title" content="Zero Magacin — Tu resumen diario con IA">
-<meta property="og:description" content="Cada mañana un email con lo que más te importa. Diseñado por ti, escrito por Claude.">
+<meta property="og:description" content="Cada mañana un email con lo que más te importa. Diseñado por ti, escrito por IA.">
 <meta property="og:url" content="https://zeroia.cl/digest">
 <title>Zero Magacin — Tu resumen diario con IA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,21 +75,22 @@ h1 em{font-style:italic;color:var(--accent);font-family:'Instrument Serif',serif
 .tp-title{font-size:clamp(38px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;}
 .tp-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--lime,#a3e635);}
 .tp-sub{font-size:17px;line-height:1.55;color:var(--text-dim,#a3a3a3);max-width:560px;}
-.tp-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.tp-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;overflow:visible;}
 @media(max-width:1024px){.tp-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:640px){.tp-grid{grid-template-columns:1fr;gap:24px;}.template-picker{padding:80px 24px;}}
-.tp-card{position:relative;background:var(--surface,#141414);border:1px solid var(--border-tp,#262626);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 420ms cubic-bezier(.2,.9,.2,1),box-shadow 420ms cubic-bezier(.2,.9,.2,1),border-color 260ms ease,background 260ms ease;box-shadow:0 2px 4px rgba(0,0,0,.4),0 12px 24px rgba(0,0,0,.5),0 30px 60px -20px rgba(0,0,0,.7);display:flex;flex-direction:column;}
-.tp-card:hover{transform:translateY(-8px);border-color:var(--border-strong,#333);box-shadow:0 4px 8px rgba(0,0,0,.5),0 20px 40px rgba(0,0,0,.6),0 50px 100px -20px rgba(0,0,0,.9);}
-.tp-card.is-selected{border-color:var(--lime,#a3e635);transform:translateY(-8px);box-shadow:0 0 0 1px var(--lime,#a3e635),0 4px 8px rgba(0,0,0,.5),0 20px 40px rgba(0,0,0,.6),0 40px 80px -20px rgba(163,230,53,0.25),0 0 60px -10px rgba(163,230,53,0.25);}
-.tp-check{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--lime,#a3e635);color:#0a0a0a;display:grid;place-items:center;opacity:0;transform:scale(0.6);transition:all 300ms cubic-bezier(.2,.9,.2,1);z-index:5;box-shadow:0 4px 14px rgba(163,230,53,0.5);}
-.tp-check svg{width:16px;height:16px;}
+.tp-card{position:relative;background:var(--surface,#141414);border:1px solid var(--border-tp,#262626);border-radius:16px;overflow:hidden;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 2px 4px rgba(0,0,0,.4),0 8px 20px rgba(0,0,0,.5);display:flex;flex-direction:column;transform-origin:center center;z-index:1;}
+.tp-card:hover{transform:scale(1.08) translateY(-8px);border-color:var(--border-strong,#333);box-shadow:0 8px 24px rgba(0,0,0,.6),0 24px 48px rgba(0,0,0,.5);z-index:10;}
+.tp-card.is-selected{border-color:var(--lime,#a3e635);transform:scale(1.03) translateY(-4px);box-shadow:0 0 0 1px var(--lime,#a3e635),0 8px 24px rgba(0,0,0,.5),0 0 40px -10px rgba(163,230,53,0.3);z-index:5;}
+.tp-card.is-selected:hover{transform:scale(1.08) translateY(-8px);z-index:10;}
+.tp-check{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:var(--lime,#a3e635);color:#0a0a0a;display:grid;place-items:center;opacity:0;transform:scale(0.6);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);z-index:5;box-shadow:0 2px 8px rgba(163,230,53,0.5);}
+.tp-check svg{width:13px;height:13px;}
 .tp-card.is-selected .tp-check{opacity:1;transform:scale(1);}
-.tp-thumb{position:relative;aspect-ratio:4/3.2;overflow:hidden;border-bottom:1px solid var(--border-tp,#262626);}
-.tp-thumb-inner{position:absolute;inset:0;padding:24px;display:flex;flex-direction:column;}
-.tp-footer{padding:26px 26px 28px;display:flex;flex-direction:column;gap:10px;}
-.tp-name{font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--text,#f5f5f5);display:flex;align-items:center;gap:10px;}
-.tp-desc{font-size:14px;line-height:1.55;color:var(--text-dim,#a3a3a3);}
-.tp-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid var(--border-tp,#262626);font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim,#a3a3a3);width:fit-content;margin-top:2px;}
+.tp-thumb{position:relative;height:170px;overflow:hidden;border-bottom:1px solid var(--border-tp,#262626);}
+.tp-thumb-inner{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;}
+.tp-footer{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px;}
+.tp-name{font-size:16px;font-weight:600;letter-spacing:-0.02em;color:var(--text,#f5f5f5);display:flex;align-items:center;gap:8px;}
+.tp-desc{font-size:12px;line-height:1.5;color:var(--text-dim,#a3a3a3);}
+.tp-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid var(--border-tp,#262626);font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim,#a3a3a3);width:fit-content;}
 .tp-card.is-selected .tp-tag{background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.4);color:var(--lime,#a3e635);}
 
 /* ── THUMB MOCKUPS ── */
@@ -334,7 +335,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <div class="hero-inner">
       <div class="hero-eyebrow"><span></span>Zero Magacin · Personalización por IA</div>
       <h1>Un email que<br>vale la pena<br><em>abrir cada mañana</em></h1>
-      <p class="hero-body">Elige tus temas, diseño visual e idioma. Claude lee, selecciona y escribe para ti — exactamente lo que quieres saber, en el largo que tienes tiempo para leer. Llega a las 7am, hora de Chile.</p>
+      <p class="hero-body">Elige tus temas, diseño visual e idioma. Inteligencia artificial que lee, selecciona y escribe para ti — exactamente lo que quieres saber, en el largo que tienes tiempo para leer. Llega cada mañana a tu correo.</p>
       <div class="btn-group">
         <a href="#previsualizador" class="btn-primary">Elegir mi diseño →</a>
         <a href="#formulario" class="btn-ghost">Ir directo al formulario</a>
@@ -360,7 +361,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
       </div>
       <div class="tp-thumb">
         <div class="tp-thumb-inner thumb-editorial">
-          <div class="masthead"><span>DIGEST · LUN 22</span><span>N°047</span></div>
+          <div class="masthead"><span>MAGACIN · LUN 22</span><span>N°047</span></div>
           <div class="hero">
             <div class="hero-kicker">CIENCIA · PORTADA</div>
             <div class="hero-title">El telescopio que cambió nuestra comprensión del cosmos</div>
@@ -386,7 +387,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
       </div>
       <div class="tp-thumb">
         <div class="tp-thumb-inner thumb-minimal">
-          <div class="top">TU DIGEST DIARIO · MARTES 22</div>
+          <div class="top">TU MAGACIN DIARIO · MARTES 22</div>
           <div class="brand">El Curioso</div>
           <div class="entry">
             <div class="num">01</div>
@@ -414,7 +415,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
       </div>
       <div class="tp-thumb">
         <div class="tp-thumb-inner thumb-magazine">
-          <div class="bar"><span>MI DIARIO</span><small>MAR 22 · DIGEST</small></div>
+          <div class="bar"><span>MI DIARIO</span><small>MAR 22 · MAGACIN</small></div>
           <div class="body">
             <div class="kicker">ECONOMÍA · ANÁLISIS</div>
             <div class="headline">El banco que apostó todo</div>
@@ -486,7 +487,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
       </div>
       <div class="tp-thumb">
         <div class="tp-thumb-inner thumb-nordic">
-          <div class="top"><span>DIGEST · MAR 22</span><span>N°031</span></div>
+          <div class="top"><span>MAGACIN · MAR 22</span><span>N°031</span></div>
           <div class="block">
             <div class="k">PSICOLOGÍA</div>
             <div class="t">Por qué tomamos peores decisiones cuando tenemos hambre</div>
@@ -531,8 +532,8 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
         </div>
 
         <div class="form-group fade d2">
-          <label class="form-label" for="digestNombre">Nombre de tu digest <em>*</em></label>
-          <input class="form-input" type="text" id="digestNombre" name="digestNombre" placeholder='Ej: "El Curioso", "Mi Diario", "DataFeed"' required>
+          <label class="form-label" for="digestNombre">Nombre de tu Magacin <em>*</em></label>
+          <input class="form-input" type="text" id="digestNombre" name="digestNombre" placeholder='Ej: "El Curioso", "Mi Diario", "La Señal"' required>
         </div>
 
         <hr class="form-divider fade">
@@ -780,6 +781,21 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
             </div>
           </div>
         </div>
+        <hr class="form-divider fade">
+
+        <!-- Hora de llegada -->
+        <div class="form-group fade">
+          <label class="form-label" for="hora">Hora de llegada</label>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem;line-height:1.6;">Elige a qué hora quieres recibir tu Magacin cada mañana (hora Chile)</p>
+          <select class="form-select" id="hora" name="hora" style="max-width:200px;">
+            <option value="06:00">6:00 am</option>
+            <option value="07:00">7:00 am</option>
+            <option value="08:00" selected>8:00 am</option>
+            <option value="09:00">9:00 am</option>
+            <option value="10:00">10:00 am</option>
+          </select>
+        </div>
+
         <input type="hidden" id="selected-template" name="diseno" value="editorial_dark">
 
         <!-- Submit -->
@@ -889,6 +905,7 @@ document.getElementById('digestForm').addEventListener('submit', function(e) {
   const longitud = f.querySelector('[name=longitud]:checked')?.value || '5min';
   const tono     = f.querySelector('[name=tono]:checked')?.value    || 'Reflexivo y profundo';
   const idioma   = f.querySelector('[name=idioma]:checked')?.value  || 'Spanish';
+  const hora     = f.hora?.value || '08:00';
 
   const dias = {
     Monday:    TOPIC_ES[f.lunes.value]    || f.lunes.value,
@@ -919,7 +936,7 @@ document.getElementById('digestForm').addEventListener('submit', function(e) {
     '',
     `Nombre:         ${nombre}`,
     `Email:          ${email}`,
-    `Digest:         ${digestNombre}`,
+    `Magacin:        ${digestNombre}`,
     '',
     '── TEMAS POR DÍA ──',
     `Lunes:          ${dias.Monday}`,
@@ -935,18 +952,20 @@ document.getElementById('digestForm').addEventListener('submit', function(e) {
     `Tono:           ${tono}`,
     `Idioma:         ${idioma}`,
     `Diseño:         ${DESIGN_NAMES[diseno] || diseno} (${diseno})`,
+    `Hora llegada:   ${hora}`,
     '',
     '── JSON para subscribers.json ──',
     JSON.stringify({
-      name:          nombre,
-      email:         email,
-      digest_name:   digestNombre,
+      name:           nombre,
+      email:          email,
+      digest_name:    digestNombre,
       topic_schedule: diasSlug,
-      read_length:   longitud,
-      tone:          tono,
-      language:      idioma,
-      design:        diseno,
-      active:        true
+      read_length:    longitud,
+      tone:           tono,
+      language:       idioma,
+      design:         diseno,
+      send_time:      hora,
+      active:         true
     }, null, 2),
     '',
     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
