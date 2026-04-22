@@ -36,7 +36,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;ali
 .btn-cta:hover{background:var(--accent2);transform:translateY(-1px);}
 
 /* ── SHARED ── */
-.container{max-width:min(1100px,90vw);margin:0 auto;padding:0 clamp(1rem,3vw,3rem);}
+.container{max-width:min(1100px,90vw);margin:0 auto;padding:0 max(5vw,80px);}
 .section-tag{font-size:.65rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;}
 .section-tag::before{content:'';display:inline-block;width:20px;height:1px;background:var(--muted2);}
 h2{font-size:clamp(1.9rem,3vw,2.8rem);font-weight:200;line-height:1.12;letter-spacing:-.02em;color:var(--text);}
@@ -67,7 +67,7 @@ h1 em{font-style:italic;color:var(--accent);font-family:'Instrument Serif',serif
 /* ── TEMPLATE PICKER ── */
 --lime:#a3e635;--surface:#141414;--surface-2:#1a1a1a;--border-tp:#262626;--border-strong:#333;--text-dim:#a3a3a3;--text-faint:#666;--lime-glow:rgba(163,230,53,0.25);
 
-.template-picker{max-width:1280px;margin:0 auto;padding:120px 48px 140px;position:relative;}
+.template-picker{max-width:1280px;margin:0 auto;padding:120px max(5vw,80px) 140px;position:relative;}
 .template-picker::before{content:"";position:absolute;inset:80px 0 80px 0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(163,230,53,0.04),transparent 70%);pointer-events:none;z-index:0;}
 .tp-header{position:relative;z-index:1;margin-bottom:72px;max-width:720px;}
 .tp-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--lime,#a3e635);margin-bottom:20px;}
@@ -75,23 +75,45 @@ h1 em{font-style:italic;color:var(--accent);font-family:'Instrument Serif',serif
 .tp-title{font-size:clamp(38px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;}
 .tp-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--lime,#a3e635);}
 .tp-sub{font-size:17px;line-height:1.55;color:var(--text-dim,#a3a3a3);max-width:560px;}
-.tp-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;overflow:visible;}
-@media(max-width:1024px){.tp-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:640px){.tp-grid{grid-template-columns:1fr;gap:24px;}.template-picker{padding:80px 24px;}}
-.tp-card{position:relative;background:var(--surface,#141414);border:1px solid var(--border-tp,#262626);border-radius:16px;overflow:hidden;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 2px 4px rgba(0,0,0,.4),0 8px 20px rgba(0,0,0,.5);display:flex;flex-direction:column;transform-origin:center center;z-index:1;}
-.tp-card:hover{transform:scale(1.08) translateY(-8px);border-color:var(--border-strong,#333);box-shadow:0 8px 24px rgba(0,0,0,.6),0 24px 48px rgba(0,0,0,.5);z-index:10;}
-.tp-card.is-selected{border-color:var(--lime,#a3e635);transform:scale(1.03) translateY(-4px);box-shadow:0 0 0 1px var(--lime,#a3e635),0 8px 24px rgba(0,0,0,.5),0 0 40px -10px rgba(163,230,53,0.3);z-index:5;}
-.tp-card.is-selected:hover{transform:scale(1.08) translateY(-8px);z-index:10;}
-.tp-check{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:var(--lime,#a3e635);color:#0a0a0a;display:grid;place-items:center;opacity:0;transform:scale(0.6);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);z-index:5;box-shadow:0 2px 8px rgba(163,230,53,0.5);}
-.tp-check svg{width:13px;height:13px;}
-.tp-card.is-selected .tp-check{opacity:1;transform:scale(1);}
-.tp-thumb{position:relative;height:170px;overflow:hidden;border-bottom:1px solid var(--border-tp,#262626);}
-.tp-thumb-inner{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;}
-.tp-footer{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px;}
-.tp-name{font-size:16px;font-weight:600;letter-spacing:-0.02em;color:var(--text,#f5f5f5);display:flex;align-items:center;gap:8px;}
-.tp-desc{font-size:12px;line-height:1.5;color:var(--text-dim,#a3a3a3);}
-.tp-tag{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid var(--border-tp,#262626);font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim,#a3a3a3);width:fit-content;}
-.tp-card.is-selected .tp-tag{background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.4);color:var(--lime,#a3e635);}
+/* ── ACCORDION ── */
+.tp-accordion{position:relative;z-index:1;display:flex;gap:6px;height:260px;}
+/* Per-card accent colours */
+.tp-card[data-template="editorial_dark"]{--card-accent:#c8a96e;}
+.tp-card[data-template="minimal_white"]{--card-accent:#e8e8e8;}
+.tp-card[data-template="magazine_bold"]{--card-accent:#ff3333;}
+.tp-card[data-template="dark_tech"]{--card-accent:#00ff41;}
+.tp-card[data-template="caligrafico"]{--card-accent:#c4a882;}
+.tp-card[data-template="nordico"]{--card-accent:#6b9bd2;}
+/* Card base */
+.tp-card{position:relative;width:120px;height:260px;border-radius:12px;overflow:hidden;cursor:pointer;flex-shrink:0;transition:width 0.4s cubic-bezier(0.4,0,0.2,1),border-color 0.25s;border:1.5px solid transparent;border-left:3px solid var(--card-accent,#a3e635);background:var(--surface,#141414);box-shadow:0 2px 8px rgba(0,0,0,0.5);}
+/* Hover: expand hovered card, contract siblings */
+.tp-accordion:has(.tp-card:hover) .tp-card:not(:hover){width:80px;}
+.tp-card:hover{width:420px;}
+/* Selected state */
+.tp-card.is-selected{width:420px;border:2px solid var(--lime,#a3e635);box-shadow:0 0 0 1px var(--lime,#a3e635),0 0 32px -8px rgba(163,230,53,0.3);}
+.tp-accordion.has-selected .tp-card:not(.is-selected):not(:hover){width:80px;}
+/* Vertical text label (shown when collapsed) */
+.tp-vlabel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:mixed;font-size:11px;font-weight:500;letter-spacing:0.12em;color:rgba(255,255,255,0.6);transition:opacity 0.12s;pointer-events:none;white-space:nowrap;z-index:3;}
+.tp-card:hover .tp-vlabel,.tp-card.is-selected .tp-vlabel{opacity:0;}
+/* Expanded content layer */
+.tp-expand{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity 0.12s;min-width:418px;}
+.tp-card:hover .tp-expand,.tp-card.is-selected .tp-expand{opacity:1;transition:opacity 0.22s 0.2s;}
+/* Thumbnail */
+.tp-thumb{flex:1;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.08);}
+.tp-thumb-inner{position:absolute;inset:0;padding:16px;display:flex;flex-direction:column;}
+/* Info bar */
+.tp-info{flex-shrink:0;padding:12px 16px 14px;background:rgba(6,6,6,0.88);}
+.tp-info-name{font-size:15px;font-weight:600;color:#fff;letter-spacing:-0.01em;margin-bottom:3px;}
+.tp-info-desc{font-size:11px;color:rgba(255,255,255,0.46);line-height:1.4;}
+/* Mobile: fixed-size scroll */
+@media(max-width:768px){
+  .tp-accordion{overflow-x:auto;overflow-y:visible;scrollbar-width:none;-ms-overflow-style:none;height:260px;}
+  .tp-accordion::-webkit-scrollbar{display:none;}
+  .tp-card,.tp-accordion:has(.tp-card:hover) .tp-card:not(:hover),.tp-accordion.has-selected .tp-card:not(.is-selected):not(:hover){width:200px!important;height:260px;}
+  .tp-card:hover,.tp-card.is-selected{width:200px!important;}
+  .tp-vlabel{writing-mode:horizontal-tb;opacity:0!important;}
+  .tp-expand{opacity:1!important;transition:none!important;min-width:0;}
+}
 
 /* ── THUMB MOCKUPS ── */
 .thumb-editorial{background:#f5f1e8;}
@@ -352,156 +374,149 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <p class="tp-sub">Haz clic en una tarjeta para seleccionar ese diseño. Se pre-completará en el formulario de suscripción.</p>
   </header>
 
-  <div class="tp-grid" role="radiogroup" aria-label="Seleccionar diseño de template">
+  <div class="tp-accordion" id="tpAccordion" role="radiogroup" aria-label="Seleccionar diseño de template">
 
     <!-- 1. EDITORIAL OSCURO -->
-    <article class="tp-card is-selected fade d1" data-template="editorial_dark" role="radio" aria-checked="true" tabindex="0">
-      <div class="tp-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <div class="tp-thumb">
-        <div class="tp-thumb-inner thumb-editorial">
-          <div class="masthead"><span>MAGACIN · LUN 22</span><span>N°047</span></div>
-          <div class="hero">
-            <div class="hero-kicker">CIENCIA · PORTADA</div>
-            <div class="hero-title">El telescopio que cambió nuestra comprensión del cosmos</div>
-            <div class="hero-body">Las últimas imágenes del James Webb revelan estructuras nunca antes vistas en galaxias distantes.</div>
-          </div>
-          <div class="row">
-            <div class="card-sm"><div class="k">TECNOLOGÍA</div><div class="t">La IA que aprende a razonar como humanos.</div></div>
-            <div class="card-sm"><div class="k">POLÍTICA</div><div class="t">El día que cambió Europa para siempre.</div></div>
+    <article class="tp-card is-selected" data-template="editorial_dark" role="radio" aria-checked="true" tabindex="0">
+      <div class="tp-vlabel">Editorial Oscuro</div>
+      <div class="tp-expand">
+        <div class="tp-thumb">
+          <div class="tp-thumb-inner thumb-editorial">
+            <div class="masthead"><span>MAGACIN · LUN 22</span><span>N°047</span></div>
+            <div class="hero">
+              <div class="hero-kicker">CIENCIA · PORTADA</div>
+              <div class="hero-title">El telescopio que cambió nuestra comprensión del cosmos</div>
+              <div class="hero-body">Las últimas imágenes del James Webb revelan estructuras nunca antes vistas.</div>
+            </div>
+            <div class="row">
+              <div class="card-sm"><div class="k">TECNOLOGÍA</div><div class="t">La IA que aprende a razonar como humanos.</div></div>
+              <div class="card-sm"><div class="k">HISTORIA</div><div class="t">El día que cambió Europa para siempre.</div></div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tp-footer">
-        <span class="tp-tag">N°01</span>
-        <h3 class="tp-name">Editorial Oscuro</h3>
-        <p class="tp-desc">Hero card oscuro sobre fondo crema. Elegante y editorial, como una portada de suplemento dominical.</p>
+        <div class="tp-info">
+          <div class="tp-info-name">Editorial Oscuro</div>
+          <div class="tp-info-desc">Hero card oscuro sobre fondo crema. Elegante y editorial.</div>
+        </div>
       </div>
     </article>
 
     <!-- 2. MINIMAL BLANCO -->
-    <article class="tp-card fade d2" data-template="minimal_white" role="radio" aria-checked="false" tabindex="0">
-      <div class="tp-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <div class="tp-thumb">
-        <div class="tp-thumb-inner thumb-minimal">
-          <div class="top">TU MAGACIN DIARIO · MARTES 22</div>
-          <div class="brand">El Curioso</div>
-          <div class="entry">
-            <div class="num">01</div>
-            <div class="t">El problema de la conciencia y por qué nadie lo ha resuelto.</div>
-            <div class="b">Una discusión entre neurocientíficos revela por qué la pregunta sigue abierta.</div>
-          </div>
-          <div class="entry">
-            <div class="num">02</div>
-            <div class="t">Cómo el sueño consolida la memoria.</div>
-            <div class="b">El hipocampo reproduce experiencias del día durante el sueño profundo.</div>
+    <article class="tp-card" data-template="minimal_white" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-vlabel">Minimal Blanco</div>
+      <div class="tp-expand">
+        <div class="tp-thumb">
+          <div class="tp-thumb-inner thumb-minimal">
+            <div class="top">TU MAGACIN DIARIO · MARTES 22</div>
+            <div class="brand">El Curioso</div>
+            <div class="entry">
+              <div class="num">01</div>
+              <div class="t">El problema de la consciencia y por qué nadie lo ha resuelto.</div>
+              <div class="b">Una discusión entre neurocientíficos revela por qué la pregunta sigue abierta.</div>
+            </div>
+            <div class="entry">
+              <div class="num">02</div>
+              <div class="t">Cómo el sueño consolida la memoria.</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tp-footer">
-        <span class="tp-tag">N°02</span>
-        <h3 class="tp-name">Minimal Blanco</h3>
-        <p class="tp-desc">Solo texto. Numeración elegante. Como un blog de lujo en tu bandeja de entrada.</p>
+        <div class="tp-info">
+          <div class="tp-info-name">Minimal Blanco</div>
+          <div class="tp-info-desc">Solo texto. Numeración elegante. Como un blog de lujo.</div>
+        </div>
       </div>
     </article>
 
     <!-- 3. MAGAZINE BOLD -->
-    <article class="tp-card fade d3" data-template="magazine_bold" role="radio" aria-checked="false" tabindex="0">
-      <div class="tp-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <div class="tp-thumb">
-        <div class="tp-thumb-inner thumb-magazine">
-          <div class="bar"><span>MI DIARIO</span><small>MAR 22 · MAGACIN</small></div>
-          <div class="body">
-            <div class="kicker">ECONOMÍA · ANÁLISIS</div>
-            <div class="headline">El banco que apostó todo</div>
-            <div class="rule"></div>
-            <div class="sub">HISTORIA · La batalla que nadie recuerda</div>
-            <div class="rule"></div>
-            <div class="sub">ARTE · El cuadro que nadie quería</div>
+    <article class="tp-card" data-template="magazine_bold" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-vlabel">Magazine Bold</div>
+      <div class="tp-expand">
+        <div class="tp-thumb">
+          <div class="tp-thumb-inner thumb-magazine">
+            <div class="bar"><span>MI DIARIO</span><small>MAR 22 · MAGACIN</small></div>
+            <div class="body">
+              <div class="kicker">ECONOMÍA · ANÁLISIS</div>
+              <div class="headline">El banco que apostó todo</div>
+              <div class="rule"></div>
+              <div class="sub">HISTORIA · La batalla que nadie recuerda</div>
+              <div class="rule"></div>
+              <div class="sub">ARTE · El cuadro que nadie quería</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tp-footer">
-        <span class="tp-tag">N°03</span>
-        <h3 class="tp-name">Magazine Bold</h3>
-        <p class="tp-desc">Tipografía de impacto. Estilo revista impresa en negrita.</p>
+        <div class="tp-info">
+          <div class="tp-info-name">Magazine Bold</div>
+          <div class="tp-info-desc">Tipografía de impacto. Estilo revista impresa en negrita.</div>
+        </div>
       </div>
     </article>
 
     <!-- 4. DARK TECH -->
-    <article class="tp-card fade d1" data-template="dark_tech" role="radio" aria-checked="false" tabindex="0">
-      <div class="tp-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <div class="tp-thumb">
-        <div class="tp-thumb-inner thumb-tech">
-          <div class="term-bar"><span></span><span></span><span></span></div>
-          <div class="line dim">$ digest --run --date=2026-04-22</div>
-          <div class="line">✓ claude-haiku initialized</div>
-          <div class="banner">
-            <div class="l1">[01] IA · GPT-5 supera benchmarks humanos</div>
-            <div class="l2">Los resultados muestran una mejora del 40% en razonamiento multi-paso...</div>
+    <article class="tp-card" data-template="dark_tech" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-vlabel">Dark Tech</div>
+      <div class="tp-expand">
+        <div class="tp-thumb">
+          <div class="tp-thumb-inner thumb-tech">
+            <div class="term-bar"><span></span><span></span><span></span></div>
+            <div class="line dim">$ magacin --run --date=2026-04-22</div>
+            <div class="line">✓ ia inicializada</div>
+            <div class="banner">
+              <div class="l1">[01] IA · GPT-5 supera benchmarks humanos</div>
+              <div class="l2">Los resultados muestran una mejora del 40% en razonamiento multi-paso...</div>
+            </div>
+            <div class="line dim">[02] MATEMÁTICAS · La conjetura de Collatz...</div>
+            <div class="prompt">ready</div>
           </div>
-          <div class="line dim">[02] MATEMÁTICAS · La conjetura de Collatz...</div>
-          <div class="prompt">ready</div>
         </div>
-      </div>
-      <div class="tp-footer">
-        <span class="tp-tag">N°04</span>
-        <h3 class="tp-name">Dark Tech</h3>
-        <p class="tp-desc">Terminal oscura, verde neón. Para los que aman los datos crudos.</p>
+        <div class="tp-info">
+          <div class="tp-info-name">Dark Tech</div>
+          <div class="tp-info-desc">Terminal oscura, verde neón. Para los que aman los datos crudos.</div>
+        </div>
       </div>
     </article>
 
     <!-- 5. CALIGRÁFICO -->
-    <article class="tp-card fade d2" data-template="caligrafico" role="radio" aria-checked="false" tabindex="0">
-      <div class="tp-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <div class="tp-thumb">
-        <div class="tp-thumb-inner thumb-caligra">
-          <div class="top">Tu magacin diario</div>
-          <div class="brand">El Lector</div>
-          <div class="orn">✦ ✦ ✦</div>
-          <div class="kick">LITERATURA · PORTADA</div>
-          <div class="pull">La carta que Flaubert escribió y nunca envió</div>
-          <div class="body"><span class="drop">E</span>n el otoño de 1857, Flaubert tomó la pluma y comenzó a escribir lo que sería una de las cartas más íntimas de su vida...</div>
+    <article class="tp-card" data-template="caligrafico" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-vlabel">Caligráfico</div>
+      <div class="tp-expand">
+        <div class="tp-thumb">
+          <div class="tp-thumb-inner thumb-caligra">
+            <div class="top">Tu magacin diario</div>
+            <div class="brand">El Lector</div>
+            <div class="orn">✦ ✦ ✦</div>
+            <div class="kick">LITERATURA · PORTADA</div>
+            <div class="pull">La carta que Flaubert escribió y nunca envió</div>
+            <div class="body"><span class="drop">E</span>n el otoño de 1857, Flaubert tomó la pluma y comenzó a escribir lo que sería una de las cartas más íntimas de su vida...</div>
+          </div>
         </div>
-      </div>
-      <div class="tp-footer">
-        <span class="tp-tag">N°05</span>
-        <h3 class="tp-name">Caligráfico</h3>
-        <p class="tp-desc">Pergamino, cursiva elegante y capitulares. Atemporal.</p>
+        <div class="tp-info">
+          <div class="tp-info-name">Caligráfico</div>
+          <div class="tp-info-desc">Pergamino, cursiva elegante y capitulares. Atemporal.</div>
+        </div>
       </div>
     </article>
 
     <!-- 6. NÓRDICO -->
-    <article class="tp-card fade d3" data-template="nordico" role="radio" aria-checked="false" tabindex="0">
-      <div class="tp-check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <div class="tp-thumb">
-        <div class="tp-thumb-inner thumb-nordic">
-          <div class="top"><span>MAGACIN · MAR 22</span><span>N°031</span></div>
-          <div class="block">
-            <div class="k">PSICOLOGÍA</div>
-            <div class="t">Por qué tomamos peores decisiones cuando tenemos hambre</div>
-          </div>
-          <div class="block alt">
-            <div class="k">ARQUITECTURA</div>
-            <div class="t">La casa que Tadao Ando construyó bajo tierra</div>
+    <article class="tp-card" data-template="nordico" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-vlabel">Nórdico</div>
+      <div class="tp-expand">
+        <div class="tp-thumb">
+          <div class="tp-thumb-inner thumb-nordic">
+            <div class="top"><span>MAGACIN · MAR 22</span><span>N°031</span></div>
+            <div class="block">
+              <div class="k">PSICOLOGÍA</div>
+              <div class="t">Por qué tomamos peores decisiones cuando tenemos hambre</div>
+            </div>
+            <div class="block alt">
+              <div class="k">ARQUITECTURA</div>
+              <div class="t">La casa que Tadao Ando construyó bajo tierra</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tp-footer">
-        <span class="tp-tag">N°06</span>
-        <h3 class="tp-name">Nórdico</h3>
-        <p class="tp-desc">Gris frío, sans-serif limpia. Claridad escandinava.</p>
+        <div class="tp-info">
+          <div class="tp-info-name">Nórdico</div>
+          <div class="tp-info-desc">Gris frío, sans-serif limpia. Claridad escandinava.</div>
+        </div>
       </div>
     </article>
 
@@ -513,7 +528,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   <div class="container">
     <div class="fade">
       <div class="section-tag">Configuración</div>
-      <h2>Tu digest,<br><em>a tu medida</em></h2>
+      <h2>Tu Magacin,<br><em>a tu medida</em></h2>
     </div>
 
     <div class="form-wrap">
@@ -844,7 +859,7 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 
-/* ── Template card selection ── */
+/* ── Accordion card selection ── */
 const DESIGN_NAMES = {
   editorial_dark: 'Editorial Oscuro',
   minimal_white:  'Minimal Blanco',
@@ -855,29 +870,30 @@ const DESIGN_NAMES = {
 };
 
 const hiddenTemplate = document.getElementById('selected-template');
+const accordion      = document.getElementById('tpAccordion');
 
 function selectDesign(slug) {
   document.querySelectorAll('.tp-card').forEach(c => {
-    c.classList.remove('is-selected');
-    c.setAttribute('aria-checked', 'false');
+    const sel = c.dataset.template === slug;
+    c.classList.toggle('is-selected', sel);
+    c.setAttribute('aria-checked', sel ? 'true' : 'false');
   });
-  if (slug) {
-    const card = document.querySelector(`.tp-card[data-template="${slug}"]`);
-    if (card) { card.classList.add('is-selected'); card.setAttribute('aria-checked', 'true'); }
-    hiddenTemplate.value = slug;
-  }
+  accordion.classList.add('has-selected');
+  if (hiddenTemplate) hiddenTemplate.value = slug;
 }
 
 document.querySelectorAll('.tp-card').forEach(card => {
   const doSelect = () => {
     selectDesign(card.dataset.template);
-    setTimeout(() => {
-      document.getElementById('formulario').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 300);
   };
   card.addEventListener('click', doSelect);
-  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doSelect(); } });
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doSelect(); }
+  });
 });
+
+/* CAMBIO 4 — editorial_dark selected by default */
+selectDesign('editorial_dark');
 
 /* ── Form submit → mailto ── */
 const TOPIC_ES = {
