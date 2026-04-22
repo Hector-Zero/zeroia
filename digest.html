@@ -5,13 +5,14 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="description" content="Zero Digest — Tu resumen diario personalizado por IA. Elige tus temas, diseño e idioma. Llega cada mañana a tu correo.">
-<meta property="og:title" content="Zero Digest — Tu resumen diario con IA">
+<meta name="description" content="Zero Magacin — Tu resumen diario personalizado por IA. Elige tus temas, diseño e idioma. Llega cada mañana a tu correo.">
+<meta property="og:title" content="Zero Magacin — Tu resumen diario con IA">
 <meta property="og:description" content="Cada mañana un email con lo que más te importa. Diseñado por ti, escrito por Claude.">
 <meta property="og:url" content="https://zeroia.cl/digest">
-<title>Zero Digest — Tu resumen diario con IA</title>
+<title>Zero Magacin — Tu resumen diario con IA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -21,7 +22,7 @@
   --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
 }
 html{scroll-behavior:smooth;overflow-x:hidden;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;border-bottom:1px solid var(--border);background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);}
@@ -57,23 +58,96 @@ h2 em{font-style:normal;color:var(--accent);}
 .hero-inner{max-width:680px;}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;}
 .hero-eyebrow span{width:5px;height:5px;background:var(--accent);border-radius:50%;display:inline-block;}
-h1{font-size:clamp(2.4rem,4.5vw,4rem);font-weight:200;line-height:1.06;letter-spacing:-.03em;color:var(--text);margin-bottom:1.75rem;}
-h1 em{font-style:normal;color:var(--accent);}
+h1{font-size:clamp(2.4rem,4.5vw,4rem);font-weight:300;line-height:1.06;letter-spacing:-.03em;color:var(--text);margin-bottom:1.75rem;font-family:'Space Grotesk',sans-serif;}
+h1 em{font-style:italic;color:var(--accent);font-family:'Instrument Serif',serif;font-weight:400;}
 .hero-body{font-size:.95rem;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:2.5rem;}
 .btn-group{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
 .hero-ghost{position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:min(500px,55vw);height:min(500px,55vw);opacity:0.04;pointer-events:none;}
 
-/* ── PREVISUALIZADOR ── */
-.preview-section{padding:6rem 0;border-top:1px solid var(--border);position:relative;}
-.designs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:3.5rem;}
-.design-card{border:1px solid var(--border2);background:var(--bg2);border-radius:4px;overflow:hidden;cursor:pointer;transition:border-color .25s,transform .2s,box-shadow .25s;position:relative;}
-.design-card:hover{border-color:rgba(200,240,96,.3);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.4);}
-.design-card.selected{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 8px 32px rgba(200,240,96,.12);}
-.design-card.selected::after{content:'✓';position:absolute;top:10px;right:10px;width:22px;height:22px;background:var(--accent);color:#080808;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600;line-height:22px;text-align:center;}
-.design-preview{height:180px;overflow:hidden;position:relative;}
-.design-meta{padding:1rem 1.1rem 1.1rem;}
-.design-name{font-size:.82rem;font-weight:400;color:var(--text);margin-bottom:.2rem;}
-.design-desc{font-size:.72rem;color:var(--muted);line-height:1.5;}
+/* ── TEMPLATE PICKER ── */
+--lime:#a3e635;--surface:#141414;--surface-2:#1a1a1a;--border-tp:#262626;--border-strong:#333;--text-dim:#a3a3a3;--text-faint:#666;--lime-glow:rgba(163,230,53,0.25);
+
+.template-picker{max-width:1280px;margin:0 auto;padding:120px 48px 140px;position:relative;}
+.template-picker::before{content:"";position:absolute;inset:80px 0 80px 0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(163,230,53,0.04),transparent 70%);pointer-events:none;z-index:0;}
+.tp-header{position:relative;z-index:1;margin-bottom:72px;max-width:720px;}
+.tp-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--lime,#a3e635);margin-bottom:20px;}
+.tp-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lime,#a3e635);box-shadow:0 0 10px var(--lime,#a3e635);}
+.tp-title{font-size:clamp(38px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;}
+.tp-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--lime,#a3e635);}
+.tp-sub{font-size:17px;line-height:1.55;color:var(--text-dim,#a3a3a3);max-width:560px;}
+.tp-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+@media(max-width:1024px){.tp-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.tp-grid{grid-template-columns:1fr;gap:24px;}.template-picker{padding:80px 24px;}}
+.tp-card{position:relative;background:var(--surface,#141414);border:1px solid var(--border-tp,#262626);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 420ms cubic-bezier(.2,.9,.2,1),box-shadow 420ms cubic-bezier(.2,.9,.2,1),border-color 260ms ease,background 260ms ease;box-shadow:0 2px 4px rgba(0,0,0,.4),0 12px 24px rgba(0,0,0,.5),0 30px 60px -20px rgba(0,0,0,.7);display:flex;flex-direction:column;}
+.tp-card:hover{transform:translateY(-8px);border-color:var(--border-strong,#333);box-shadow:0 4px 8px rgba(0,0,0,.5),0 20px 40px rgba(0,0,0,.6),0 50px 100px -20px rgba(0,0,0,.9);}
+.tp-card.is-selected{border-color:var(--lime,#a3e635);transform:translateY(-8px);box-shadow:0 0 0 1px var(--lime,#a3e635),0 4px 8px rgba(0,0,0,.5),0 20px 40px rgba(0,0,0,.6),0 40px 80px -20px rgba(163,230,53,0.25),0 0 60px -10px rgba(163,230,53,0.25);}
+.tp-check{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--lime,#a3e635);color:#0a0a0a;display:grid;place-items:center;opacity:0;transform:scale(0.6);transition:all 300ms cubic-bezier(.2,.9,.2,1);z-index:5;box-shadow:0 4px 14px rgba(163,230,53,0.5);}
+.tp-check svg{width:16px;height:16px;}
+.tp-card.is-selected .tp-check{opacity:1;transform:scale(1);}
+.tp-thumb{position:relative;aspect-ratio:4/3.2;overflow:hidden;border-bottom:1px solid var(--border-tp,#262626);}
+.tp-thumb-inner{position:absolute;inset:0;padding:24px;display:flex;flex-direction:column;}
+.tp-footer{padding:26px 26px 28px;display:flex;flex-direction:column;gap:10px;}
+.tp-name{font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--text,#f5f5f5);display:flex;align-items:center;gap:10px;}
+.tp-desc{font-size:14px;line-height:1.55;color:var(--text-dim,#a3a3a3);}
+.tp-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid var(--border-tp,#262626);font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim,#a3a3a3);width:fit-content;margin-top:2px;}
+.tp-card.is-selected .tp-tag{background:rgba(163,230,53,0.1);border-color:rgba(163,230,53,0.4);color:var(--lime,#a3e635);}
+
+/* ── THUMB MOCKUPS ── */
+.thumb-editorial{background:#f5f1e8;}
+.thumb-editorial .masthead{display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:7px;letter-spacing:0.15em;color:#999;padding-bottom:10px;border-bottom:0.5px solid #d4cfc0;margin-bottom:12px;}
+.thumb-editorial .hero{background:#1a1a1a;color:#f5f1e8;padding:14px 14px 16px;border-radius:4px;flex:1;}
+.thumb-editorial .hero-kicker{font-family:'Space Grotesk',sans-serif;font-size:6px;letter-spacing:0.2em;color:#a3e635;margin-bottom:6px;}
+.thumb-editorial .hero-title{font-family:'Instrument Serif',serif;font-size:13px;line-height:1.15;font-weight:600;margin-bottom:6px;}
+.thumb-editorial .hero-body{font-size:6.5px;line-height:1.4;color:#b8b0a0;}
+.thumb-editorial .row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
+.thumb-editorial .card-sm{background:#ebe5d4;border-radius:3px;padding:8px;}
+.thumb-editorial .card-sm .k{font-family:'Space Grotesk',sans-serif;font-size:5.5px;letter-spacing:0.15em;color:#a89e8c;margin-bottom:4px;}
+.thumb-editorial .card-sm .t{font-family:'Instrument Serif',serif;font-size:8px;line-height:1.2;color:#1a1a1a;font-weight:500;}
+.thumb-minimal{background:#ffffff;}
+.thumb-minimal .top{font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.15em;color:#a3a3a3;text-align:center;padding-bottom:14px;border-bottom:0.5px solid #e5e5e5;margin-bottom:16px;}
+.thumb-minimal .brand{font-family:'Instrument Serif',serif;font-size:14px;text-align:center;color:#1a1a1a;margin-bottom:18px;}
+.thumb-minimal .entry{margin-bottom:14px;}
+.thumb-minimal .entry .num{font-family:'Space Grotesk',sans-serif;font-size:7px;color:#a3a3a3;letter-spacing:0.2em;margin-bottom:4px;}
+.thumb-minimal .entry .t{font-size:8.5px;line-height:1.35;color:#171717;font-weight:500;margin-bottom:3px;}
+.thumb-minimal .entry .b{font-size:6.5px;line-height:1.4;color:#737373;}
+.thumb-magazine{background:#f4f2ed;padding:0!important;}
+.thumb-magazine .bar{background:#111;color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:11px;letter-spacing:0.2em;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;}
+.thumb-magazine .bar small{font-family:'Space Grotesk',sans-serif;font-size:6px;font-weight:400;letter-spacing:0.15em;color:#a3a3a3;}
+.thumb-magazine .body{padding:14px 16px;flex:1;}
+.thumb-magazine .kicker{font-family:'Space Grotesk',sans-serif;font-size:6.5px;letter-spacing:0.2em;color:#737373;margin-bottom:8px;}
+.thumb-magazine .headline{font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:14px;line-height:1.05;color:#111;text-transform:uppercase;margin-bottom:10px;letter-spacing:-0.01em;}
+.thumb-magazine .rule{height:1px;background:#111;margin:10px 0;}
+.thumb-magazine .sub{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:8px;line-height:1.2;color:#111;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.thumb-tech{background:#0d0d0d;font-family:'Space Grotesk',monospace;}
+.thumb-tech .term-bar{display:flex;gap:5px;margin-bottom:12px;}
+.thumb-tech .term-bar span{width:7px;height:7px;border-radius:50%;background:#333;}
+.thumb-tech .term-bar span:first-child{background:#ff5f56;}
+.thumb-tech .term-bar span:nth-child(2){background:#ffbd2e;}
+.thumb-tech .term-bar span:nth-child(3){background:#27c93f;}
+.thumb-tech .line{font-size:7px;line-height:1.6;color:#a3e635;margin-bottom:2px;}
+.thumb-tech .line.dim{color:#555;}
+.thumb-tech .line.white{color:#e5e5e5;}
+.thumb-tech .banner{border:1px solid #a3e635;background:rgba(163,230,53,0.08);padding:8px 10px;margin:8px 0;border-radius:2px;}
+.thumb-tech .banner .l1{color:#a3e635;font-size:7.5px;font-weight:700;margin-bottom:3px;letter-spacing:0.05em;}
+.thumb-tech .banner .l2{color:#a3a3a3;font-size:6.5px;line-height:1.5;}
+.thumb-tech .prompt{color:#a3e635;font-size:7px;margin-top:auto;}
+.thumb-tech .prompt::after{content:"_";display:inline-block;animation:blink 1s steps(2) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.thumb-caligra{background:linear-gradient(180deg,#f5ede0 0%,#ebe1cf 100%);}
+.thumb-caligra .top{text-align:center;font-family:'Space Grotesk',sans-serif;font-size:6px;letter-spacing:0.2em;color:#a89e8c;text-transform:uppercase;padding-bottom:10px;margin-bottom:10px;}
+.thumb-caligra .brand{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;text-align:center;color:#3d2f1f;margin-bottom:4px;}
+.thumb-caligra .orn{text-align:center;color:#a89e8c;font-size:8px;letter-spacing:0.4em;margin-bottom:14px;}
+.thumb-caligra .kick{text-align:center;font-family:'Space Grotesk',sans-serif;font-size:5.5px;letter-spacing:0.25em;color:#8a7c65;text-transform:uppercase;margin-bottom:6px;}
+.thumb-caligra .pull{font-family:'Instrument Serif',serif;font-size:12px;line-height:1.2;color:#3d2f1f;text-align:center;font-style:italic;padding:0 6px;}
+.thumb-caligra .drop{font-family:'Instrument Serif',serif;font-size:22px;float:left;line-height:0.85;padding-right:4px;color:#3d2f1f;font-style:normal;}
+.thumb-caligra .body{font-family:'Instrument Serif',serif;font-size:6.5px;line-height:1.5;color:#5c4a33;margin-top:10px;}
+.thumb-nordic{background:#f2f2f0;font-family:'Space Grotesk',sans-serif;}
+.thumb-nordic .top{font-size:7px;letter-spacing:0.1em;color:#6b6b6b;display:flex;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid #d4d4d2;margin-bottom:14px;}
+.thumb-nordic .block{background:#2d3538;color:#e8e8e6;padding:10px 12px;border-radius:2px;margin-bottom:8px;}
+.thumb-nordic .block.alt{background:#fff;color:#2d3538;border:1px solid #d4d4d2;}
+.thumb-nordic .block .k{font-size:5.5px;letter-spacing:0.18em;text-transform:uppercase;color:#8a9599;margin-bottom:4px;font-weight:500;}
+.thumb-nordic .block.alt .k{color:#6b6b6b;}
+.thumb-nordic .block .t{font-size:8px;line-height:1.3;font-weight:500;}
 
 /* ── TEMPLATE MINIATURES ── */
 /* editorial_dark */
@@ -258,7 +332,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </svg>
   <div class="container">
     <div class="hero-inner">
-      <div class="hero-eyebrow"><span></span>Zero Digest · Personalización por IA</div>
+      <div class="hero-eyebrow"><span></span>Zero Magacin · Personalización por IA</div>
       <h1>Un email que<br>vale la pena<br><em>abrir cada mañana</em></h1>
       <p class="hero-body">Elige tus temas, diseño visual e idioma. Claude lee, selecciona y escribe para ti — exactamente lo que quieres saber, en el largo que tienes tiempo para leer. Llega a las 7am, hora de Chile.</p>
       <div class="btn-group">
@@ -269,182 +343,167 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   </div>
 </section>
 
-<!-- ═══ PREVISUALIZADOR ═══ -->
-<section class="preview-section" id="previsualizador">
-  <div class="container">
-    <div class="fade">
-      <div class="section-tag">Diseños</div>
-      <h2>Elige el estilo<br><em>que habla por ti</em></h2>
-      <p style="color:var(--muted);font-size:.88rem;margin-top:1rem;max-width:480px;">Haz clic en una tarjeta para seleccionar ese diseño. Se pre-completará en el formulario.</p>
-    </div>
+<!-- ═══ TEMPLATE PICKER ═══ -->
+<section class="template-picker" id="previsualizador" aria-labelledby="tp-title">
+  <header class="tp-header fade">
+    <div class="tp-eyebrow">01 · Elige tu diseño</div>
+    <h2 class="tp-title" id="tp-title">Un magacin <em>que habla por ti.</em></h2>
+    <p class="tp-sub">Haz clic en una tarjeta para seleccionar ese diseño. Se pre-completará en el formulario de suscripción.</p>
+  </header>
 
-    <div class="designs-grid">
+  <div class="tp-grid" role="radiogroup" aria-label="Seleccionar diseño de template">
 
-      <!-- 1. editorial_dark -->
-      <div class="design-card fade d1" data-design="editorial_dark">
-        <div class="design-preview">
-          <div class="prev-editorial">
-            <div class="ph">
-              <div class="ph-tag">CIENCIA · LEAD</div>
-              <div class="ph-title">El telescopio que<br>cambió nuestra<br>comprensión del cosmos</div>
-              <div class="ph-body">Las últimas imágenes del James Webb revelan estructuras nunca antes vistas en galaxias distantes...</div>
-            </div>
-            <div class="cols">
-              <div class="card">
-                <div class="card-tag">TECNOLOGÍA</div>
-                <div class="card-title">La IA que aprende a razonar como humano</div>
-                <div class="card-body">Investigadores presentan un modelo capaz de...</div>
-              </div>
-              <div class="card">
-                <div class="card-tag">HISTORIA</div>
-                <div class="card-title">El día que cambió Europa para siempre</div>
-                <div class="card-body">En 1943, una decisión estratégica alteró el...</div>
-              </div>
-            </div>
+    <!-- 1. EDITORIAL OSCURO -->
+    <article class="tp-card is-selected fade d1" data-template="editorial_dark" role="radio" aria-checked="true" tabindex="0">
+      <div class="tp-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="tp-thumb">
+        <div class="tp-thumb-inner thumb-editorial">
+          <div class="masthead"><span>DIGEST · LUN 22</span><span>N°047</span></div>
+          <div class="hero">
+            <div class="hero-kicker">CIENCIA · PORTADA</div>
+            <div class="hero-title">El telescopio que cambió nuestra comprensión del cosmos</div>
+            <div class="hero-body">Las últimas imágenes del James Webb revelan estructuras nunca antes vistas en galaxias distantes.</div>
+          </div>
+          <div class="row">
+            <div class="card-sm"><div class="k">TECNOLOGÍA</div><div class="t">La IA que aprende a razonar como humanos.</div></div>
+            <div class="card-sm"><div class="k">POLÍTICA</div><div class="t">El día que cambió Europa para siempre.</div></div>
           </div>
         </div>
-        <div class="design-meta">
-          <div class="design-name">Editorial Oscuro</div>
-          <div class="design-desc">Hero card oscuro sobre fondo crema. Elegante y editorial.</div>
-        </div>
       </div>
+      <div class="tp-footer">
+        <span class="tp-tag">N°01</span>
+        <h3 class="tp-name">Editorial Oscuro</h3>
+        <p class="tp-desc">Hero card oscuro sobre fondo crema. Elegante y editorial, como una portada de suplemento dominical.</p>
+      </div>
+    </article>
 
-      <!-- 2. minimal_white -->
-      <div class="design-card fade d2" data-design="minimal_white">
-        <div class="design-preview">
-          <div class="prev-minimal">
-            <div class="mh">Tu digest diario · Martes 22</div>
-            <div class="mt">El Curioso</div>
-            <div class="ml"></div>
-            <div class="ms">
-              <span class="ms-n">01</span><span class="ms-tag">FILOSOFÍA</span>
-              <div class="ms-title">El problema de la consciencia y por qué nadie lo ha resuelto</div>
-              <div class="ms-body">Desde Descartes hasta los neurocientíficos modernos, la pregunta persiste: ¿qué hace que una experiencia sea subjetiva?</div>
-            </div>
-            <div class="ms">
-              <span class="ms-n">02</span><span class="ms-tag">CIENCIA</span>
-              <div class="ms-title">Cómo el sueño consolida la memoria</div>
-              <div class="ms-body">Un nuevo estudio revela que durante el sueño profundo el hipocampo reproduce experiencias del día...</div>
-            </div>
+    <!-- 2. MINIMAL BLANCO -->
+    <article class="tp-card fade d2" data-template="minimal_white" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="tp-thumb">
+        <div class="tp-thumb-inner thumb-minimal">
+          <div class="top">TU DIGEST DIARIO · MARTES 22</div>
+          <div class="brand">El Curioso</div>
+          <div class="entry">
+            <div class="num">01</div>
+            <div class="t">El problema de la conciencia y por qué nadie lo ha resuelto.</div>
+            <div class="b">Una discusión entre neurocientíficos revela por qué la pregunta sigue abierta.</div>
+          </div>
+          <div class="entry">
+            <div class="num">02</div>
+            <div class="t">Cómo el sueño consolida la memoria.</div>
+            <div class="b">El hipocampo reproduce experiencias del día durante el sueño profundo.</div>
           </div>
         </div>
-        <div class="design-meta">
-          <div class="design-name">Minimal Blanco</div>
-          <div class="design-desc">Solo texto. Numeración elegante. Como un blog de lujo.</div>
-        </div>
       </div>
+      <div class="tp-footer">
+        <span class="tp-tag">N°02</span>
+        <h3 class="tp-name">Minimal Blanco</h3>
+        <p class="tp-desc">Solo texto. Numeración elegante. Como un blog de lujo en tu bandeja de entrada.</p>
+      </div>
+    </article>
 
-      <!-- 3. magazine_bold -->
-      <div class="design-card fade d3" data-design="magazine_bold">
-        <div class="design-preview">
-          <div class="prev-magazine">
-            <div class="mgh">
-              <div class="mgh-title">Mi Diario</div>
-              <div class="mgh-sub">MARTES 22 DE ABRIL · TU DIGEST DIARIO</div>
-            </div>
-            <div class="mgb"></div>
-            <div class="mg-content">
-              <div class="mg-tag">ECONOMÍA</div>
-              <div class="mg-title">El banco central que apostó todo a una sola carta</div>
-              <div class="mg-body">La decisión más arriesgada en la historia monetaria de América Latina quedará en los libros de texto. Así ocurrió y así terminó...</div>
-            </div>
-            <div class="mg-div"></div>
-            <div class="mg-s">
-              <div class="mg-s-t">HISTORIA · La batalla que nadie recuerda</div>
-            </div>
-            <div class="mg-div"></div>
-            <div class="mg-s">
-              <div class="mg-s-t">ARTE · El cuadro que costó una fortuna y nadie quería</div>
-            </div>
+    <!-- 3. MAGAZINE BOLD -->
+    <article class="tp-card fade d3" data-template="magazine_bold" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="tp-thumb">
+        <div class="tp-thumb-inner thumb-magazine">
+          <div class="bar"><span>MI DIARIO</span><small>MAR 22 · DIGEST</small></div>
+          <div class="body">
+            <div class="kicker">ECONOMÍA · ANÁLISIS</div>
+            <div class="headline">El banco que apostó todo</div>
+            <div class="rule"></div>
+            <div class="sub">HISTORIA · La batalla que nadie recuerda</div>
+            <div class="rule"></div>
+            <div class="sub">ARTE · El cuadro que nadie quería</div>
           </div>
         </div>
-        <div class="design-meta">
-          <div class="design-name">Magazine Bold</div>
-          <div class="design-desc">Tipografía de impacto. Estilo revista impresa en negrita.</div>
+      </div>
+      <div class="tp-footer">
+        <span class="tp-tag">N°03</span>
+        <h3 class="tp-name">Magazine Bold</h3>
+        <p class="tp-desc">Tipografía de impacto. Estilo revista impresa en negrita.</p>
+      </div>
+    </article>
+
+    <!-- 4. DARK TECH -->
+    <article class="tp-card fade d1" data-template="dark_tech" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="tp-thumb">
+        <div class="tp-thumb-inner thumb-tech">
+          <div class="term-bar"><span></span><span></span><span></span></div>
+          <div class="line dim">$ digest --run --date=2026-04-22</div>
+          <div class="line">✓ claude-haiku initialized</div>
+          <div class="banner">
+            <div class="l1">[01] IA · GPT-5 supera benchmarks humanos</div>
+            <div class="l2">Los resultados muestran una mejora del 40% en razonamiento multi-paso...</div>
+          </div>
+          <div class="line dim">[02] MATEMÁTICAS · La conjetura de Collatz...</div>
+          <div class="prompt">ready</div>
         </div>
       </div>
+      <div class="tp-footer">
+        <span class="tp-tag">N°04</span>
+        <h3 class="tp-name">Dark Tech</h3>
+        <p class="tp-desc">Terminal oscura, verde neón. Para los que aman los datos crudos.</p>
+      </div>
+    </article>
 
-      <!-- 4. dark_tech -->
-      <div class="design-card fade d1" data-design="dark_tech">
-        <div class="design-preview">
-          <div class="prev-darktech">
-            <div class="dt-head">
-              <div class="dt-cmd">$ digest --run --date=2025-04-22 --time=07:00:00</div>
-              <div class="dt-name">DataFeed</div>
-              <div class="dt-sub"># tu digest diario</div>
-            </div>
-            <div class="dt-card">
-              <div class="dt-idx">[01] &gt; INTELIGENCIA ARTIFICIAL</div>
-              <div class="dt-title">GPT-5 supera al humano promedio en razonamiento lógico complejo</div>
-              <div class="dt-body">Los benchmarks publicados muestran una mejora del 40% en tareas de razonamiento multi-paso comparado con modelos anteriores...</div>
-            </div>
-            <div class="dt-card">
-              <div class="dt-idx">[02] &gt; MATEMÁTICAS</div>
-              <div class="dt-title">La conjetura de Collatz: simple de enunciar, imposible de probar</div>
-              <div class="dt-body">Toma cualquier número. Si es par, divídelo entre 2. Si es impar, multiplícalo por 3 y suma 1...</div>
-            </div>
+    <!-- 5. CALIGRÁFICO -->
+    <article class="tp-card fade d2" data-template="caligrafico" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="tp-thumb">
+        <div class="tp-thumb-inner thumb-caligra">
+          <div class="top">Tu magacin diario</div>
+          <div class="brand">El Lector</div>
+          <div class="orn">✦ ✦ ✦</div>
+          <div class="kick">LITERATURA · PORTADA</div>
+          <div class="pull">La carta que Flaubert escribió y nunca envió</div>
+          <div class="body"><span class="drop">E</span>n el otoño de 1857, Flaubert tomó la pluma y comenzó a escribir lo que sería una de las cartas más íntimas de su vida...</div>
+        </div>
+      </div>
+      <div class="tp-footer">
+        <span class="tp-tag">N°05</span>
+        <h3 class="tp-name">Caligráfico</h3>
+        <p class="tp-desc">Pergamino, cursiva elegante y capitulares. Atemporal.</p>
+      </div>
+    </article>
+
+    <!-- 6. NÓRDICO -->
+    <article class="tp-card fade d3" data-template="nordico" role="radio" aria-checked="false" tabindex="0">
+      <div class="tp-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="tp-thumb">
+        <div class="tp-thumb-inner thumb-nordic">
+          <div class="top"><span>DIGEST · MAR 22</span><span>N°031</span></div>
+          <div class="block">
+            <div class="k">PSICOLOGÍA</div>
+            <div class="t">Por qué tomamos peores decisiones cuando tenemos hambre</div>
+          </div>
+          <div class="block alt">
+            <div class="k">ARQUITECTURA</div>
+            <div class="t">La casa que Tadao Ando construyó bajo tierra</div>
           </div>
         </div>
-        <div class="design-meta">
-          <div class="design-name">Dark Tech</div>
-          <div class="design-desc">Terminal oscura, verde neón. Para los que aman los datos.</div>
-        </div>
       </div>
-
-      <!-- 5. caligrafico -->
-      <div class="design-card fade d2" data-design="caligrafico">
-        <div class="design-preview">
-          <div class="prev-calig">
-            <div class="ca-head">
-              <div class="ca-label">Tu digest diario</div>
-              <div class="ca-title">El Lector</div>
-              <div class="ca-deco">✦ ✦ ✦</div>
-            </div>
-            <div class="ca-card">
-              <div class="ca-card-deco">✦ LITERATURA ✦</div>
-              <div class="ca-card-title">La carta que Flaubert escribió<br>y nunca envió</div>
-              <div class="ca-card-sep"></div>
-              <div class="ca-body">
-                <span class="ca-cap">E</span>n el otoño de 1857, Gustave Flaubert tomó la pluma y comenzó a escribir lo que sería una de las cartas más íntimas de su vida. El destinatario nunca la recibió...
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="design-meta">
-          <div class="design-name">Caligráfico</div>
-          <div class="design-desc">Pergamino, cursiva elegante y capitulares. Atemporal.</div>
-        </div>
+      <div class="tp-footer">
+        <span class="tp-tag">N°06</span>
+        <h3 class="tp-name">Nórdico</h3>
+        <p class="tp-desc">Gris frío, sans-serif limpia. Claridad escandinava.</p>
       </div>
+    </article>
 
-      <!-- 6. nordico -->
-      <div class="design-card fade d3" data-design="nordico">
-        <div class="design-preview">
-          <div class="prev-nordico">
-            <div class="nd-label">Tu digest diario · Martes 22</div>
-            <div class="nd-title">Mente Nórdica</div>
-            <div class="nd-rule"></div>
-            <div class="nd-hero">
-              <div class="nd-htag">PSICOLOGÍA</div>
-              <div class="nd-htitle">Por qué tomamos peores decisiones cuando tenemos hambre</div>
-              <div class="nd-hbody">El fenómeno del "ego depletion" y su impacto en nuestra capacidad de razonamiento. Nuevos estudios matizan décadas de investigación...</div>
-            </div>
-            <div class="nd-card">
-              <div class="nd-ctag">ARQUITECTURA</div>
-              <div class="nd-ctitle">La casa que Tadao Ando construyó bajo tierra</div>
-            </div>
-            <div class="nd-card">
-              <div class="nd-ctag">ECONOMÍA</div>
-              <div class="nd-ctitle">El modelo nórdico visto desde Chile</div>
-            </div>
-          </div>
-        </div>
-        <div class="design-meta">
-          <div class="design-name">Nórdico</div>
-          <div class="design-desc">Gris frío, sans-serif limpia. Claridad escandinava.</div>
-        </div>
-      </div>
-
-    </div><!-- /designs-grid -->
   </div>
 </section>
 
@@ -703,7 +762,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
 
         <hr class="form-divider fade">
 
-        <!-- Idioma y diseño -->
+        <!-- Idioma -->
         <div class="form-row fade">
           <div class="form-group">
             <label class="form-label">Idioma <em>*</em></label>
@@ -720,24 +779,8 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
               </label>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Diseño favorito <em>*</em></label>
-            <p style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem;line-height:1.6;">Selecciona una tarjeta arriba o elige aquí:</p>
-            <select class="form-select" id="disenoSelect" name="diseno">
-              <option value="">— Elige un diseño —</option>
-              <option value="editorial_dark">Editorial Oscuro</option>
-              <option value="minimal_white">Minimal Blanco</option>
-              <option value="magazine_bold">Magazine Bold</option>
-              <option value="dark_tech">Dark Tech</option>
-              <option value="caligrafico">Caligráfico</option>
-              <option value="nordico">Nórdico</option>
-            </select>
-            <div class="design-indicator" id="designIndicator" style="margin-top:.5rem;display:none;">
-              <span class="di-dot"></span>
-              <span id="designLabel">—</span>
-            </div>
-          </div>
         </div>
+        <input type="hidden" id="selected-template" name="diseno" value="editorial_dark">
 
         <!-- Submit -->
         <div class="submit-area fade">
@@ -785,7 +828,7 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 
-/* ── Design card selection ── */
+/* ── Template card selection ── */
 const DESIGN_NAMES = {
   editorial_dark: 'Editorial Oscuro',
   minimal_white:  'Minimal Blanco',
@@ -795,33 +838,30 @@ const DESIGN_NAMES = {
   nordico:        'Nórdico'
 };
 
-const disenoSelect    = document.getElementById('disenoSelect');
-const designIndicator = document.getElementById('designIndicator');
-const designLabel     = document.getElementById('designLabel');
+const hiddenTemplate = document.getElementById('selected-template');
 
 function selectDesign(slug) {
-  document.querySelectorAll('.design-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.tp-card').forEach(c => {
+    c.classList.remove('is-selected');
+    c.setAttribute('aria-checked', 'false');
+  });
   if (slug) {
-    const card = document.querySelector(`.design-card[data-design="${slug}"]`);
-    if (card) card.classList.add('selected');
-    disenoSelect.value = slug;
-    designLabel.textContent = DESIGN_NAMES[slug] || slug;
-    designIndicator.style.display = 'flex';
-    designIndicator.classList.add('has-value');
+    const card = document.querySelector(`.tp-card[data-template="${slug}"]`);
+    if (card) { card.classList.add('is-selected'); card.setAttribute('aria-checked', 'true'); }
+    hiddenTemplate.value = slug;
   }
 }
 
-document.querySelectorAll('.design-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const slug = card.dataset.design;
-    selectDesign(slug);
+document.querySelectorAll('.tp-card').forEach(card => {
+  const doSelect = () => {
+    selectDesign(card.dataset.template);
     setTimeout(() => {
       document.getElementById('formulario').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 300);
-  });
+  };
+  card.addEventListener('click', doSelect);
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); doSelect(); } });
 });
-
-disenoSelect.addEventListener('change', () => selectDesign(disenoSelect.value));
 
 /* ── Form submit → mailto ── */
 const TOPIC_ES = {
@@ -839,10 +879,10 @@ document.getElementById('digestForm').addEventListener('submit', function(e) {
   const nombre       = f.nombre.value.trim();
   const email        = f.email.value.trim();
   const digestNombre = f.digestNombre.value.trim();
-  const diseno       = disenoSelect.value;
+  const diseno       = hiddenTemplate.value;
 
   if (!nombre || !email || !digestNombre || !diseno) {
-    alert('Por favor completa todos los campos obligatorios, incluyendo elegir un diseño.');
+    alert('Por favor completa todos los campos obligatorios.');
     return;
   }
 
@@ -874,7 +914,7 @@ document.getElementById('digestForm').addEventListener('submit', function(e) {
 
   const body = [
     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
-    '  NUEVA SUSCRIPCIÓN — ZERO DIGEST',
+    '  NUEVA SUSCRIPCIÓN — ZERO MAGACIN',
     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
     '',
     `Nombre:         ${nombre}`,
@@ -912,7 +952,7 @@ document.getElementById('digestForm').addEventListener('submit', function(e) {
     '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
   ].join('\n');
 
-  const subject = encodeURIComponent(`Nueva suscripción Zero Digest — ${nombre}`);
+  const subject = encodeURIComponent(`Nueva suscripción Zero Magacin — ${nombre}`);
   const bodyEnc = encodeURIComponent(body);
   const mailto  = `mailto:zero@zeroia.cl?subject=${subject}&body=${bodyEnc}`;
 
