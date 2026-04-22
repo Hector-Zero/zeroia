@@ -117,9 +117,24 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
 .save-msg{font-size:.82rem;color:var(--muted);margin-left:1rem;opacity:0;transition:opacity .3s;}
 .save-msg.visible{opacity:1;}
 
+/* PAYMENT PACKAGES */
+.pay-section{margin-bottom:3rem;}
+.pay-packages{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;}
+.pay-pkg{position:relative;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:1.4rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;text-decoration:none;color:var(--text);transition:border-color .2s,transform .15s;}
+.pay-pkg:hover{border-color:var(--muted);transform:translateY(-2px);}
+.pay-pkg.popular{border-color:var(--lime);}
+.pay-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--lime);color:#080808;font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .65rem;border-radius:20px;white-space:nowrap;}
+.pay-pkg-name{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.pay-pkg-credits{font-size:1.6rem;font-weight:600;letter-spacing:-.03em;color:var(--accent);line-height:1;}
+.pay-pkg-credits span{font-size:.82rem;font-weight:300;color:var(--muted);margin-left:.2rem;}
+.pay-pkg-price{font-size:.88rem;font-weight:400;color:var(--text);}
+.pay-pkg-btn{display:block;text-align:center;background:var(--bg);border:1px solid var(--border2);color:var(--muted);font-size:.78rem;font-weight:400;padding:.5rem;border-radius:4px;margin-top:.4rem;transition:background .2s,color .2s,border-color .2s;}
+.pay-pkg:hover .pay-pkg-btn{background:var(--lime);color:#080808;border-color:var(--lime);}
+
 @media(max-width:600px){
   .dash-cards{grid-template-columns:1fr;}
   .topics-grid{grid-template-columns:repeat(4,1fr);}
+  .pay-packages{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -201,6 +216,36 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
         <div class="dash-card-label">Próxima entrega</div>
         <div class="dash-card-value" id="dash-next" style="font-size:1.5rem;">—</div>
         <div class="dash-card-desc" id="dash-next-topic">—</div>
+      </div>
+    </div>
+
+    <!-- PAYMENT PACKAGES -->
+    <div class="pay-section">
+      <div class="section-title">Recargar créditos</div>
+      <div class="pay-packages">
+
+        <a class="pay-pkg" href="https://mpago.la/starter" target="_blank" rel="noopener">
+          <div class="pay-pkg-name">Starter</div>
+          <div class="pay-pkg-credits">10 <span>entregas</span></div>
+          <div class="pay-pkg-price">$3.000 CLP</div>
+          <div class="pay-pkg-btn">Comprar →</div>
+        </a>
+
+        <a class="pay-pkg popular" href="https://mpago.la/regular" target="_blank" rel="noopener">
+          <div class="pay-badge">Más popular</div>
+          <div class="pay-pkg-name">Regular</div>
+          <div class="pay-pkg-credits">30 <span>entregas</span></div>
+          <div class="pay-pkg-price">$8.000 CLP</div>
+          <div class="pay-pkg-btn">Comprar →</div>
+        </a>
+
+        <a class="pay-pkg" href="https://mpago.la/trimestral" target="_blank" rel="noopener">
+          <div class="pay-pkg-name">Trimestral</div>
+          <div class="pay-pkg-credits">90 <span>entregas</span></div>
+          <div class="pay-pkg-price">$20.000 CLP</div>
+          <div class="pay-pkg-btn">Comprar →</div>
+        </a>
+
       </div>
     </div>
 
