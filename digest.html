@@ -67,16 +67,17 @@ h1 em{font-style:italic;color:var(--accent);font-family:'Instrument Serif',serif
 /* ── TEMPLATE PICKER ── */
 --lime:#a3e635;--surface:#141414;--surface-2:#1a1a1a;--border-tp:#262626;--border-strong:#333;--text-dim:#a3a3a3;--text-faint:#666;--lime-glow:rgba(163,230,53,0.25);
 
-.template-picker{max-width:1280px;margin:0 auto;padding:120px max(5vw,80px) 140px;position:relative;}
+.template-picker{width:100%;padding:120px 0 140px;position:relative;}
 .template-picker::before{content:"";position:absolute;inset:80px 0 80px 0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(163,230,53,0.04),transparent 70%);pointer-events:none;z-index:0;}
-.tp-header{position:relative;z-index:1;margin-bottom:72px;max-width:720px;}
+.tp-inner{max-width:1200px;margin:0 auto;padding:0 max(5vw,80px);position:relative;z-index:1;}
+.tp-header{margin-bottom:72px;max-width:720px;}
 .tp-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--lime,#a3e635);margin-bottom:20px;}
 .tp-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lime,#a3e635);box-shadow:0 0 10px var(--lime,#a3e635);}
 .tp-title{font-size:clamp(38px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;font-family:'Space Grotesk',sans-serif;}
 .tp-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--lime,#a3e635);}
 .tp-sub{font-size:17px;line-height:1.55;color:var(--text-dim,#a3a3a3);max-width:560px;}
 /* ── ACCORDION ── */
-.tp-accordion{position:relative;z-index:1;display:flex;gap:6px;height:260px;max-width:1200px;margin-left:auto;margin-right:auto;padding-left:5%;padding-right:5%;}
+.tp-accordion{position:relative;z-index:1;display:flex;gap:6px;height:260px;}
 /* Per-card accent colours */
 .tp-card[data-template="editorial_dark"]{--card-accent:#c8a96e;}
 .tp-card[data-template="minimal_white"]{--card-accent:#e8e8e8;}
@@ -368,6 +369,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
 
 <!-- ═══ TEMPLATE PICKER ═══ -->
 <section class="template-picker" id="previsualizador" aria-labelledby="tp-title">
+  <div class="tp-inner">
   <header class="tp-header fade">
     <div class="tp-eyebrow">01 · Elige tu diseño</div>
     <h2 class="tp-title" id="tp-title">Un magacin <em>que habla por ti.</em></h2>
@@ -521,6 +523,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     </article>
 
   </div>
+  </div><!-- /tp-inner -->
 </section>
 
 <!-- ═══ FORMULARIO ═══ -->
