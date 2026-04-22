@@ -224,14 +224,14 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
       <div class="section-title">Recargar créditos</div>
       <div class="pay-packages">
 
-        <a class="pay-pkg" href="https://mpago.la/starter" target="_blank" rel="noopener">
+        <a class="pay-pkg" data-href="https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=0e5b85d312864e0d9bbbc6fb0b12a457" href="#">
           <div class="pay-pkg-name">Starter</div>
           <div class="pay-pkg-credits">10 <span>entregas</span></div>
           <div class="pay-pkg-price">$3.000 CLP</div>
           <div class="pay-pkg-btn">Comprar →</div>
         </a>
 
-        <a class="pay-pkg popular" href="https://mpago.la/regular" target="_blank" rel="noopener">
+        <a class="pay-pkg popular" data-href="https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=e9362aad437d4bc3bb6f54b11675cbd2" href="#">
           <div class="pay-badge">Más popular</div>
           <div class="pay-pkg-name">Regular</div>
           <div class="pay-pkg-credits">30 <span>entregas</span></div>
@@ -239,7 +239,7 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
           <div class="pay-pkg-btn">Comprar →</div>
         </a>
 
-        <a class="pay-pkg" href="https://mpago.la/trimestral" target="_blank" rel="noopener">
+        <a class="pay-pkg" data-href="https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=27959d2daa5b43c2b92ccde0fabba1a2" href="#">
           <div class="pay-pkg-name">Trimestral</div>
           <div class="pay-pkg-credits">90 <span>entregas</span></div>
           <div class="pay-pkg-price">$20.000 CLP</div>
@@ -542,6 +542,19 @@ document.getElementById('prefs-form').addEventListener('submit', async function(
   }
   msg.classList.add('visible');
   setTimeout(() => msg.classList.remove('visible'), 3000);
+});
+
+/* ── Payment package click: inject payer_email ── */
+document.querySelectorAll('.pay-pkg').forEach(pkg => {
+  pkg.addEventListener('click', async function(e) {
+    e.preventDefault();
+    const base = this.dataset.href;
+    if (!base) return;
+    const { data: { session } } = await sb.auth.getSession();
+    const email = session?.user?.email || '';
+    const url = email ? `${base}&payer_email=${encodeURIComponent(email)}` : base;
+    window.open(url, '_blank', 'noopener');
+  });
 });
 
 function setMsg(el, text, type) {
