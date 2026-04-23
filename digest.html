@@ -355,6 +355,7 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <span class="logo-wordmark">Z E R O</span>
   </a>
   <div class="nav-links">
+    <a href="/">Inicio</a>
     <a href="/cuenta.html">Mi Magacin →</a>
   </div>
 </nav>
@@ -1035,6 +1036,17 @@ document.getElementById('btn-crear').addEventListener('click', async function() 
   if (!ok) {
     this.disabled = false;
     this.textContent = 'Crear mi Magacin →';
+  }
+});
+
+/* ── Enter key triggers active button ── */
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' || e.target.tagName === 'SELECT') return;
+  const step2 = document.getElementById('step2Panel');
+  if (step2 && step2.classList.contains('visible')) {
+    document.getElementById('btn-crear').click();
+  } else {
+    document.getElementById('btn-continuar').click();
   }
 });
 </script>

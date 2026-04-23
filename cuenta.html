@@ -10,28 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-/* Detect Supabase email-confirmation redirect and auto-login */
-(function() {
-  var hash = window.location.hash;
-  if (hash && hash.includes('access_token')) {
-    var params = new URLSearchParams(hash.substring(1));
-    var accessToken = params.get('access_token');
-    var refreshToken = params.get('refresh_token');
-    if (accessToken) {
-      var _sb = supabase.createClient(
-        'https://rgvlztbkorhhtgtqkqev.supabase.co',
-        'sb_publishable_SAvZMvWeRi0XlX3S2avktQ_YvXzx2z8'
-      );
-      _sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
-        .then(function() {
-          window.location.hash = '';
-          window.location.reload();
-        });
-    }
-  }
-})();
-</script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -161,6 +139,28 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
 </style>
 </head>
 <body>
+<script>
+/* Detect Supabase email-confirmation redirect and auto-login */
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    var params = new URLSearchParams(hash.substring(1));
+    var accessToken = params.get('access_token');
+    var refreshToken = params.get('refresh_token');
+    if (accessToken) {
+      var _sb = supabase.createClient(
+        'https://rgvlztbkorhhtgtqkqev.supabase.co',
+        'sb_publishable_SAvZMvWeRi0XlX3S2avktQ_YvXzx2z8'
+      );
+      _sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+        .then(function() {
+          window.location.hash = '';
+          window.location.reload();
+        });
+    }
+  }
+})();
+</script>
 
 <!-- NAV -->
 <nav>
@@ -588,6 +588,18 @@ function setMsg(el, text, type) {
   el.textContent = text;
   el.className = 'login-msg' + (type ? ' ' + type : '');
 }
+
+/* ── Enter key triggers active button ── */
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('view-dashboard').style.display === 'block') return;
+  const resetVisible = document.getElementById('panel-reset').style.display !== 'none';
+  if (resetVisible) {
+    document.getElementById('btn-reset').click();
+  } else {
+    document.getElementById('btn-login').click();
+  }
+});
 </script>
 </body>
 </html>
