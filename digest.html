@@ -355,7 +355,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
     <span class="logo-wordmark">Z E R O</span>
   </a>
   <div class="nav-links">
-    <a href="/">Inicio</a>
     <a href="/cuenta.html">Mi Magacin →</a>
   </div>
 </nav>
@@ -983,9 +982,10 @@ async function submitSubscriber(nombre, email, digestNombre, password = null) {
   document.getElementById('formulario').innerHTML = `
     <div style="max-width:560px;margin:80px auto;text-align:center;padding:0 2rem;">
       <div style="font-size:2.5rem;margin-bottom:1.5rem;">✓</div>
-      <h2 style="font-size:1.8rem;font-weight:300;margin-bottom:1rem;color:#f5f5f5;">¡Tu Magacin está listo!</h2>
+      <h2 style="font-size:1.8rem;font-weight:300;margin-bottom:1rem;color:#f5f5f5;">¡Casi listo!</h2>
       <p style="color:#666660;font-size:.95rem;line-height:1.8;">
-        Revisa tu email <strong style="color:#f5f5f5;">${email}</strong> para activar tu cuenta y acceder a tu portal.
+        Te enviamos un email de confirmación a <strong style="color:#f5f5f5;">${email}</strong>.<br>
+        Haz click en el link para activar tu cuenta y luego entra a Mi Magacin.
       </p>
       <a href="/cuenta.html" style="display:inline-block;margin-top:1.5rem;color:#a3e635;font-size:.88rem;">Ir a Mi Magacin →</a>
     </div>`;

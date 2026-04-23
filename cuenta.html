@@ -10,6 +10,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* Detect Supabase email-confirmation redirect and auto-login */
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    var params = new URLSearchParams(hash.substring(1));
+    var accessToken = params.get('access_token');
+    var refreshToken = params.get('refresh_token');
+    if (accessToken) {
+      var _sb = supabase.createClient(
+        'https://rgvlztbkorhhtgtqkqev.supabase.co',
+        'sb_publishable_SAvZMvWeRi0XlX3S2avktQ_YvXzx2z8'
+      );
+      _sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+        .then(function() {
+          window.location.hash = '';
+          window.location.reload();
+        });
+    }
+  }
+})();
+</script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -119,7 +141,7 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
 
 /* PAYMENT PACKAGES */
 .pay-section{margin-bottom:3rem;}
-.pay-packages{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1.5rem;}
+.pay-packages{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;}
 .pay-pkg{position:relative;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:1.4rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;text-decoration:none;color:var(--text);transition:border-color .2s,transform .15s;}
 .pay-pkg:hover{border-color:var(--muted);transform:translateY(-2px);}
 .pay-pkg.popular{border-color:var(--lime);}
@@ -226,14 +248,6 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
     <div class="pay-section">
       <div class="section-title">Recargar créditos</div>
       <div class="pay-packages">
-
-        <a class="pay-pkg" data-href="https://link.mercadopago.cl/magacinzero" href="#">
-          <div class="pay-badge">Más económico</div>
-          <div class="pay-pkg-name">Prueba</div>
-          <div class="pay-pkg-credits">1 <span>entrega</span></div>
-          <div class="pay-pkg-price">$300 CLP</div>
-          <div class="pay-pkg-btn">Comprar →</div>
-        </a>
 
         <a class="pay-pkg" data-href="https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=0e5b85d312864e0d9bbbc6fb0b12a457" href="#">
           <div class="pay-pkg-name">Starter</div>
