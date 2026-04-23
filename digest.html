@@ -292,6 +292,20 @@ h1 em{font-style:italic;color:var(--accent);font-family:'Instrument Serif',serif
 /* divider */
 .form-divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0;}
 
+/* password toggle */
+.pw-wrap{position:relative;}
+.pw-wrap .form-input{padding-right:3.5rem;}
+.pw-toggle{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:#a3e635;font-size:.72rem;font-family:inherit;cursor:pointer;padding:0;letter-spacing:.04em;}
+
+/* step 2 inline panel */
+.step2-panel{display:none;margin-top:1.75rem;padding:1.75rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:6px;}
+.step2-panel.visible{display:block;}
+.step2-title{font-size:1rem;font-weight:400;margin-bottom:.25rem;}
+.step2-sub{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;}
+.step2-already{font-size:.78rem;color:var(--muted);margin-top:1rem;}
+.step2-already a{color:var(--accent);text-decoration:none;}
+.step2-already a:hover{text-decoration:underline;}
+
 /* submit area */
 .submit-area{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-top:2.5rem;}
 .submit-note{font-size:.75rem;color:var(--muted);line-height:1.6;}
@@ -343,7 +357,6 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
   <div class="nav-links">
     <a href="/">Inicio</a>
     <a href="/cuenta.html">Mi Magacin →</a>
-    <a href="#formulario" class="btn-cta">Suscribirme →</a>
   </div>
 </nav>
 
@@ -546,26 +559,9 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
             <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
           </div>
           <div class="form-group">
-            <label class="form-label" for="email">Email <em>*</em></label>
-            <input class="form-input" type="email" id="email" name="email" placeholder="tu@email.com" required>
+            <label class="form-label" for="digestNombre">Nombre de tu Magacin <em>*</em></label>
+            <input class="form-input" type="text" id="digestNombre" name="digestNombre" placeholder='Ej: "El Curioso", "Mi Diario"' required>
           </div>
-        </div>
-
-        <div class="form-row fade d2" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-          <div class="form-group">
-            <label class="form-label" for="password">Contraseña <em>*</em></label>
-            <input class="form-input" type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="password2">Repite la contraseña <em>*</em></label>
-            <input class="form-input" type="password" id="password2" name="password2" placeholder="Repite tu contraseña" required>
-          </div>
-        </div>
-        <p class="fade d2" style="font-size:.75rem;color:var(--muted);margin-top:-.4rem;margin-bottom:.5rem;">La usarás para acceder a Mi Magacin y ver tus créditos</p>
-
-        <div class="form-group fade d2">
-          <label class="form-label" for="digestNombre">Nombre de tu Magacin <em>*</em></label>
-          <input class="form-input" type="text" id="digestNombre" name="digestNombre" placeholder='Ej: "El Curioso", "Mi Diario", "La Señal"' required>
         </div>
 
         <hr class="form-divider fade">
@@ -830,20 +826,30 @@ footer{border-top:1px solid var(--border);padding:1.75rem 2.5rem;display:flex;ju
 
         <input type="hidden" id="selected-template" name="diseno" value="editorial_dark">
 
-        <!-- Submit -->
+        <!-- Submit step 1 -->
         <div class="submit-area fade">
-          <button type="submit" class="btn-primary">
-            Enviar mi configuración →
+          <button type="button" id="btn-continuar" class="btn-primary">
+            Continuar →
           </button>
-          <p class="submit-note">
-            Te responderemos para confirmar tu suscripción.<br>
-            Sin pago ahora. Sin spam.
-          </p>
         </div>
 
-        <div class="success-msg" id="successMsg">
-          ✓ &nbsp;¡Listo! Se abrirá tu cliente de email con tu configuración lista para enviar.<br>
-          Si no se abrió, escríbenos directamente a <strong>zero@zeroia.cl</strong>
+        <!-- Step 2: account creation (shown if no session) -->
+        <div class="step2-panel" id="step2Panel">
+          <div class="step2-title">Crea tu cuenta</div>
+          <p class="step2-sub">Para acceder a tu portal, ver tus créditos y editar preferencias en cualquier momento.</p>
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email <em>*</em></label>
+            <input class="form-input" type="email" id="reg-email" placeholder="tu@email.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Contraseña <em>*</em></label>
+            <div class="pw-wrap">
+              <input class="form-input" type="password" id="reg-password" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+              <button type="button" class="pw-toggle" data-target="reg-password">ver</button>
+            </div>
+          </div>
+          <button type="button" id="btn-crear" class="btn-primary">Crear mi Magacin →</button>
+          <p class="step2-already">¿Ya tienes cuenta? <a href="/cuenta.html">Entra aquí</a></p>
         </div>
 
       </form>
@@ -917,39 +923,25 @@ const SUPABASE_URL = 'https://rgvlztbkorhhtgtqkqev.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_SAvZMvWeRi0XlX3S2avktQ_YvXzx2z8';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-document.getElementById('digestForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const f = this;
+/* ── Password toggle ── */
+document.querySelectorAll('.pw-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const input = document.getElementById(this.dataset.target);
+    if (!input) return;
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    this.textContent = showing ? 'ver' : 'ocultar';
+  });
+});
 
-  const nombre       = f.nombre.value.trim();
-  const email        = f.email.value.trim();
-  const digestNombre = f.digestNombre.value.trim();
-  const diseno       = hiddenTemplate.value;
-  const password     = f.password.value;
-  const password2    = f.password2.value;
-
-  if (!nombre || !email || !digestNombre || !diseno) {
-    alert('Por favor completa todos los campos obligatorios.');
-    return;
-  }
-  if (password.length < 8) {
-    alert('La contraseña debe tener al menos 8 caracteres.');
-    return;
-  }
-  if (password !== password2) {
-    alert('Las contraseñas no coinciden.');
-    return;
-  }
-
-  const btn = f.querySelector('[type=submit]');
-  btn.disabled = true;
-  btn.textContent = 'Enviando…';
-
-  const payload = {
+/* ── Build payload from form ── */
+function buildPayload(nombre, email, digestNombre) {
+  const f = document.getElementById('digestForm');
+  return {
     name:            nombre,
     email:           email,
     digest_name:     digestNombre,
-    design:          diseno,
+    design:          hiddenTemplate.value,
     read_length:     f.querySelector('[name=longitud]:checked')?.value  || '15min',
     tone:            f.querySelector('[name=tono]:checked')?.value      || 'curious and engaging',
     language:        f.querySelector('[name=idioma]:checked')?.value    || 'Spanish',
@@ -964,40 +956,85 @@ document.getElementById('digestForm').addEventListener('submit', async function(
     credits: 0,
     active:  true
   };
+}
 
-  try {
-    const { error: insertError } = await supabaseClient
-      .from('subscribers')
-      .insert(payload);
+/* ── Submit to Supabase ── */
+async function submitSubscriber(nombre, email, digestNombre, password = null) {
+  const payload = buildPayload(nombre, email, digestNombre);
 
-    if (insertError) {
-      btn.disabled = false;
-      btn.textContent = 'Enviar mi configuración →';
-      if (insertError.code === '23505') {
-        alert('Este email ya está registrado. ¡Ya tienes un Magacin!');
-      } else {
-        alert('Hubo un error al registrarte. Por favor intenta de nuevo.');
-        console.error('Supabase insert error:', insertError);
-      }
-      return;
+  const { error: insertError } = await supabaseClient
+    .from('subscribers')
+    .insert(payload);
+
+  if (insertError) {
+    if (insertError.code === '23505') {
+      alert('Este email ya está registrado. ¡Ya tienes un Magacin!');
+    } else {
+      alert('Hubo un error al registrarte. Por favor intenta de nuevo.');
+      console.error('Supabase insert error:', insertError);
     }
+    return false;
+  }
 
-    /* Create auth account so user can log in to cuenta.html */
+  if (password) {
     await supabaseClient.auth.signUp({ email, password });
+  }
 
-    document.getElementById('formulario').innerHTML = `
-      <div style="max-width:560px;margin:80px auto;text-align:center;padding:0 2rem;">
-        <div style="font-size:2.5rem;margin-bottom:1.5rem;">✓</div>
-        <h2 style="font-size:1.8rem;font-weight:300;margin-bottom:1rem;color:#f5f5f5;">¡Tu Magacin está listo!</h2>
-        <p style="color:#666660;font-size:.95rem;line-height:1.8;">
-          Revisa tu email <strong style="color:#f5f5f5;">${email}</strong> para activar tu cuenta y acceder a tu portal.
-        </p>
-      </div>`;
-  } catch(err) {
-    btn.disabled = false;
-    btn.textContent = 'Enviar mi configuración →';
-    alert('Error de conexión. Por favor intenta de nuevo.');
-    console.error(err);
+  document.getElementById('formulario').innerHTML = `
+    <div style="max-width:560px;margin:80px auto;text-align:center;padding:0 2rem;">
+      <div style="font-size:2.5rem;margin-bottom:1.5rem;">✓</div>
+      <h2 style="font-size:1.8rem;font-weight:300;margin-bottom:1rem;color:#f5f5f5;">¡Tu Magacin está listo!</h2>
+      <p style="color:#666660;font-size:.95rem;line-height:1.8;">
+        Revisa tu email <strong style="color:#f5f5f5;">${email}</strong> para activar tu cuenta y acceder a tu portal.
+      </p>
+      <a href="/cuenta.html" style="display:inline-block;margin-top:1.5rem;color:#a3e635;font-size:.88rem;">Ir a Mi Magacin →</a>
+    </div>`;
+  return true;
+}
+
+/* ── Paso 1: Continuar ── */
+document.getElementById('btn-continuar').addEventListener('click', async function() {
+  const nombre       = document.getElementById('nombre').value.trim();
+  const digestNombre = document.getElementById('digestNombre').value.trim();
+
+  if (!nombre || !digestNombre) {
+    alert('Por favor ingresa tu nombre y el nombre de tu Magacin.');
+    return;
+  }
+
+  this.disabled = true;
+  this.textContent = 'Verificando…';
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if (session) {
+    await submitSubscriber(nombre, session.user.email, digestNombre);
+  } else {
+    this.disabled = false;
+    this.textContent = 'Continuar →';
+    document.getElementById('step2Panel').classList.add('visible');
+    document.getElementById('reg-email').focus();
+  }
+});
+
+/* ── Paso 2: Crear mi Magacin ── */
+document.getElementById('btn-crear').addEventListener('click', async function() {
+  const email    = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+
+  if (!email) { alert('Por favor ingresa tu email.'); return; }
+  if (password.length < 8) { alert('La contraseña debe tener al menos 8 caracteres.'); return; }
+
+  this.disabled = true;
+  this.textContent = 'Creando tu Magacin…';
+
+  const nombre       = document.getElementById('nombre').value.trim();
+  const digestNombre = document.getElementById('digestNombre').value.trim();
+
+  const ok = await submitSubscriber(nombre, email, digestNombre, password);
+  if (!ok) {
+    this.disabled = false;
+    this.textContent = 'Crear mi Magacin →';
   }
 });
 </script>

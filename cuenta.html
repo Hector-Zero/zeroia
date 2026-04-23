@@ -119,7 +119,7 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
 
 /* PAYMENT PACKAGES */
 .pay-section{margin-bottom:3rem;}
-.pay-packages{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;}
+.pay-packages{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1.5rem;}
 .pay-pkg{position:relative;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:1.4rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;text-decoration:none;color:var(--text);transition:border-color .2s,transform .15s;}
 .pay-pkg:hover{border-color:var(--muted);transform:translateY(-2px);}
 .pay-pkg.popular{border-color:var(--lime);}
@@ -154,7 +154,7 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
   </a>
   <div class="nav-links">
     <a href="/">Inicio</a>
-    <a href="/digest.html">Magacin →</a>
+    <a href="/cuenta.html" id="nav-magacin">Mi Magacin →</a>
     <button id="nav-logout">Cerrar sesión</button>
   </div>
 </nav>
@@ -180,7 +180,10 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
         </div>
         <div class="field">
           <label for="login-password">Contraseña</label>
-          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+          <div style="position:relative;">
+            <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" style="width:100%;padding-right:3.5rem;">
+            <button type="button" onclick="(function(b){var i=document.getElementById('login-password');var s=i.type==='text';i.type=s?'password':'text';b.textContent=s?'ver':'ocultar';})(this)" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--lime);font-size:.72rem;font-family:inherit;cursor:pointer;padding:0;">ver</button>
+          </div>
         </div>
         <button class="btn-primary" id="btn-login">Entrar</button>
         <p class="login-msg" id="login-msg"></p>
@@ -223,6 +226,14 @@ main{padding-top:100px;padding-bottom:80px;max-width:860px;margin:0 auto;padding
     <div class="pay-section">
       <div class="section-title">Recargar créditos</div>
       <div class="pay-packages">
+
+        <a class="pay-pkg" data-href="https://link.mercadopago.cl/magacinzero" href="#">
+          <div class="pay-badge">Más económico</div>
+          <div class="pay-pkg-name">Prueba</div>
+          <div class="pay-pkg-credits">1 <span>entrega</span></div>
+          <div class="pay-pkg-price">$300 CLP</div>
+          <div class="pay-pkg-btn">Comprar →</div>
+        </a>
 
         <a class="pay-pkg" data-href="https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=0e5b85d312864e0d9bbbc6fb0b12a457" href="#">
           <div class="pay-pkg-name">Starter</div>
@@ -445,6 +456,7 @@ document.getElementById('nav-logout').addEventListener('click', async () => {
   document.getElementById('view-dashboard').style.display = 'none';
   document.getElementById('view-login').style.display = 'flex';
   document.getElementById('nav-logout').style.display = 'none';
+  document.getElementById('nav-magacin').style.display = '';
 });
 
 /* ── DASHBOARD ── */
@@ -452,6 +464,7 @@ async function showDashboard(email) {
   document.getElementById('view-login').style.display = 'none';
   document.getElementById('view-dashboard').style.display = 'block';
   document.getElementById('nav-logout').style.display = 'inline-flex';
+  document.getElementById('nav-magacin').style.display = 'none';
 
   const { data, error } = await sb
     .from('subscribers')
